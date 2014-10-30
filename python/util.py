@@ -24,14 +24,35 @@ import os
 import math
 import re
 import logging
+import random
+
+logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    handler=logging.StreamHandler(), # stderr
+                    level=logging.INFO)
+
+def weighted_sample(x, weights, n=1):
+    "Returns a weighted sample of length n with replacement. Weight do not need to sum to 1."
+    length = len(x)
+    assert length == len(weights) > 0
+    assert n >= 1
+    totalweight = sum(weights)
+    cumulative_sum = 0
+    sample = []
+    r = [random.random() * totalweight for i in xrange(n)]
+    for i in xrange(length):
+        cumulative_sum += weights[i]
+        for j in xrange(n):
+            if r[j] < cumulative_sum:
+                sample.append(x[i])
+                r[j] = totalweight + 1 #make sure that it won't be triggered again
+                if len(sample) >= n:
+                    break
+    return sample
 
 def get_logger (name, level = logging.INFO):
     logger = logging.getLogger(name)
     logger.setLevel(level)
-    handler = logging.StreamHandler() # stderr
-    handler.setFormatter(logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s',
-                                           '%Y-%m-%d %H:%M:%S'))
-    logger.addHandler(handler)
     return logger
 
 def info (s,logger = None):
@@ -126,7 +147,7 @@ def ensure_dir (path):
 # http://nullege.com/codes/search/pyutil.strutil.commonsuffix
 def commonsuffix(l):
     cp = []
-    for i in range(min(map(len, l))):
+    for i in range(min([len(element) for element in l])):
         c = l[0][-i-1]
         for s in l[1:]:
             if s[-i-1] != c:

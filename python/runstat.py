@@ -54,7 +54,8 @@ class Counter (RunStat):
             raise ValueError("Counter.add: incompatible observation",self.title,observation)
         self.counts[observation] = self.counts.get(observation,0) + n
 
-    def num (self): return sum(self.counts.itervalues())
+    def num (self):
+        return sum(self.counts.itervalues())
 
     def entropy (self, scaledto1 = False):
         return util.dict_entropy(self.counts, scaledto1=scaledto1)
@@ -71,7 +72,8 @@ class Counter (RunStat):
             self.counts,util.title2missing(self.title)))
 
     def out (self, pc = util.PrintCounter()):
-        if pc is None: pc = util.PrintCounter()
+        if pc is None:
+            pc = util.PrintCounter()
         return pc.out(self.counts, self.title)
 
     def csv (self, csv, logger=None, smallest=0):
@@ -87,7 +89,8 @@ class Counter (RunStat):
     @staticmethod
     def test ():
         c = Counter("foo")
-        for x in ['a','b','a','c','a','b']: c.add(x)
+        for x in ['a','b','a','c','a','b']:
+            c.add(x)
         pc = util.PrintCounter()
         c.out(pc)
         d = Counter("foo", values=['c','d','e','c',None,'a','b',None])
@@ -96,22 +99,26 @@ class Counter (RunStat):
         c.merge(d)
         c.out(pc)
         e = Counter("bar")
-        try: e.merge(c)
+        try:
+            e.merge(c)
         except Exception as ex:
             print ex
-        try: e.merge(c)
+        try:
+            e.merge(c)
         except Exception as ex:
             print ex
         c.add("123")
         c.add("a",3)
         c.add("b",1)
         c.out()
-        try: c.merge(e)
+        try:
+            c.merge(e)
         except Exception as ex:
             print ex
         c = Counter(('a','b'))
         c.add(('a1','b1'))
-        try: c.add(('a1','b1','d'))
+        try:
+            c.add(('a1','b1','d'))
         except Exception as ex:
             print ex
         c.add(('a1','b1'))
@@ -120,7 +127,7 @@ class Counter (RunStat):
         c.csv(sys.stdout)
 
 class NumStat (RunStat):
-    def __init__ (self, title, values = None, values_weights = None):
+    def __init__ (self, title, values = None, values_weights = None, integer = False):
         super(NumStat, self).__init__(title)
         self.count = 0
         self.minV = float("inf")
@@ -130,6 +137,7 @@ class NumStat (RunStat):
         self.sumV = 0
         self.sum2 = 0
         self.nanCount = 0
+        self.integer = integer  # if true, min/max is printed with {:,d}
         self.bad = None
         if values is not None:
             for v in values:
@@ -139,9 +147,11 @@ class NumStat (RunStat):
                 self.add(v,w)
 
     def add (self, v,  n = 1):
-        try: v = float(v)
+        try:
+            v = float(v)
         except ValueError:
-            if self.bad is None: self.bad = Counter("{}(bad)".format(self.title))
+            if self.bad is None:
+                self.bad = Counter("{}(bad)".format(self.title))
             self.bad.add(v,n)
             return
         if math.isnan(v):
@@ -198,24 +208,30 @@ class NumStat (RunStat):
         return math.sqrt(self.sum2 / self.count -
                          (self.sumV * self.sumV) / (self.count * self.count))
 
+
     def __str__ (self, toString = str):
-        if toString is None: toString = str
+        if toString is None:
+            toString = str
         return "{:s} [{:,d} {:s}${:s} {:s}{:s}:{:s}{:s}{:s}{:s}]".format(
             self.title,self.count,toString(self.mean()),toString(self.stdDev()),
-            toString(self.minV),("" if self.minN == 1 else "*{:,d}".format(self.minN)),
-            toString(self.maxV),("" if self.maxN == 1 else "*{:,d}".format(self.maxN)),
+            ("{:,d}".format(int(self.minV)) if self.integer else toString(self.minV)),
+            ("" if self.minN == 1 else "*{:,d}".format(self.minN)),
+            ("{:,d}".format(int(self.maxV)) if self.integer else toString(self.maxV)),
+            ("" if self.maxN == 1 else "*{:,d}".format(self.maxN)),
             ("" if self.nanCount==0 else " NaN={:,d}".format(self.nanCount)),
             ("" if self.bad is None else " Bad={:,d}".format(self.bad.num())))
 
     def out (self, toString = str):
         print "=== "+self.__str__(toString)
-        if self.bad is None: return False # full output, not truncation
+        if self.bad is None:
+            return False # full output, not truncation
         return self.bad.out(util.PrintCounter())
 
     @staticmethod
     def test ():
         c = NumStat("foo")
-        for x in [1,2,1,3,0,0,0,0,float("NaN")]: c.add(x)
+        for x in [1,2,1,3,0,0,0,0,float("NaN")]:
+            c.add(x)
         c.out()
         print "c.num={:,d}".format(c.num())
         d = NumStat("foo",values=[5,6,8,3,4,5,2,4,5,6,7,4,4,5])
@@ -237,7 +253,8 @@ def test():
     c.add("a")
     n = NumStat("foo")
     n.add(1)
-    try: c.merge(n)
+    try:
+        c.merge(n)
     except Exception as ex:
         print ex
     n.merge(c)

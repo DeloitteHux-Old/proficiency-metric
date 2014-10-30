@@ -30,7 +30,9 @@ import itertools
 import csv
 
 def file2path (x,name):
-    'Convert file or string to path'
+    """Convert file or string to a path.
+    If argument is a file, close it and return the name.
+    """
     if isinstance(x,file):
         x.close()
         return x.name
@@ -38,14 +40,14 @@ def file2path (x,name):
         return x
     raise ValueError(name,x)
 
-class VowpalWabbit (object):
-    logger = util.get_logger("VowpalWabbit")
+class VowpalWabbitPipe (object):
+    logger = util.get_logger("VowpalWabbitPipe")
     devnull = open(os.devnull,'wb')
 
     aparse = argparse.ArgumentParser(add_help=False)
-    aparse.add_argument('-vw-exe',type=argparse.FileType('r'),
+    aparse.add_argument('-vw-exe',required=True,type=argparse.FileType('r'),
                         help='VowpalWabbit executable path')
-    aparse.add_argument('-vw-model',type=argparse.FileType('r'),
+    aparse.add_argument('-vw-model',required=True,type=argparse.FileType('r'),
                         help='VowpalWabbit model path')
 
     def __init__ (self, model = None, vw = None, parser = None, logger = None):
@@ -57,20 +59,20 @@ class VowpalWabbit (object):
             self.model = parser.vw_model = file2path(parser.vw_model,"VowpalWabbit.model")
         else:
             self.model = file2path(model,"VowpalWabbit.model")
-        self.logger = VowpalWabbit.logger if logger is None else logger
+        self.logger = VowpalWabbitPipe.logger if logger is None else logger
         cmd = [self.vw,"--initial_regressor",self.model,"--raw_predictions",
                "/dev/stdout","--testonly"]
         util.reading(self.model,self.logger)
         self.logger.info("Running %s",cmd)
         self.s = subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE,
-                                  stderr=VowpalWabbit.devnull)
+                                  stderr=VowpalWabbitPipe.devnull)
         self.logger.info("Started PID=%d",self.s.pid)
         self.model = model
         self.called = 0
         self.pending = 0
 
     def __str__ (self):
-        return "VowpalWabbit(pid=%d,exe=%s,model=%s,called=%d,pending=%d)" % (
+        return "VowpalWabbitPipe(pid=%d,exe=%s,model=%s,called=%d,pending=%d)" % (
             self.s.pid,self.vw,self.model,self.called,self.pending)
 
     def send (self, example):
@@ -79,7 +81,7 @@ class VowpalWabbit (object):
 
     def recv (self):
         if self.pending <= 0:
-            raise ValueError("VowpalWabbit.recv: nothing is pending",self)
+            raise ValueError("VowpalWabbitPipe.recv: nothing is pending",self)
         self.pending -= 1
         self.called += 1
         return float(self.s.stdout.readline().split()[0])
@@ -87,7 +89,7 @@ class VowpalWabbit (object):
     def eval (self, example):
         if self.pending >= 0:
             # the return value relates to the first pending example, not this one!
-            raise ValueError("VowpalWabbit.eval: pending",self,example)
+            raise ValueError("VowpalWabbitPipe.eval: pending",self,example)
         self.send(example)
         return self.recv()
 
@@ -99,26 +101,177 @@ class VowpalWabbit (object):
         self.s.stdout.close()
         self.logger.info("Waiting for %s to finish",str(self))
         if self.s.wait() != 0:
-            raise Exception("VowpalWabbit.close",self.s.pid,self.s.returncode)
+            raise Exception("VowpalWabbitPipe.close",self.s.pid,self.s.returncode)
+
+    def __del__ (self):
+        self.close()
+
+#pylint: disable=no-member
+import cffi
+class VowpalWabbitFFI (object):
+    logger = util.get_logger("VowpalWabbitFFI")
+
+    aparse = argparse.ArgumentParser(add_help=False)
+    aparse.add_argument('-vw-build',required=True,help='VowpalWabbit build path')
+    aparse.add_argument('-vw-model',required=True,type=argparse.FileType('r'),
+                        help='VowpalWabbit model path')
+
+    def __init__(self, model = None, build = None, parser = None, logger = None):
+        if build:
+            self.build = build
+        elif parser:
+            self.build = parser.vw_build
+        else:
+            self.build = None
+        if self.build == '/':
+            self.build = None
+        if model:
+            self.model = file2path(model,"VowpalWabbit.model")
+        elif parser:
+            self.model = parser.vw_model = file2path(parser.vw_model,"VowpalWabbit.model")
+        else:
+            self.model = None
+        self.logger = VowpalWabbitFFI.logger if logger is None else logger
+        ffi = cffi.FFI()        # create ffi wrapper object
+        # https://github.com/JohnLangford/vowpal_wabbit/blob/master/vowpalwabbit/vwdll.h
+        ffi.cdef('''
+            void* VW_InitializeA(char *);
+            void* VW_ReadExampleA(void*, char*);
+            float VW_Predict(void*, void*);
+            void VW_FinishExample(void*, void*);
+            void VW_Finish(void*);
+        ''')
+        self.vwffilib = ffi.verify('''
+            typedef short char16_t;
+            #define bool int
+            #define true (1)
+            #define false (0)
+            #include "vwdll.h"
+        ''',include_dirs=[os.path.join(self.build,"vowpalwabbit")
+                          if self.build else "/usr/include/vowpalwabbit"],
+            library_dirs=[os.path.join(self.build,"vowpalwabbit")
+                          if self.build else "/usr/lib64"],
+            libraries=["vw_c_wrapper", "vw", "allreduce"],
+            ext_package='vw')
+        self._vw = self.vwffilib.VW_InitializeA(
+            "--testonly --raw_predictions"+
+            (" --initial_regressor "+self.model if self.model else ""))
+        if not self._vw:
+            raise ValueError("VW_InitializeA",model)
+        self.called = 0
+        self.saved = list()
+
+    def eval (self, example):
+        vwex = self.vwffilib.VW_ReadExampleA(self._vw, example)
+        score = self.vwffilib.VW_Predict(self._vw, vwex)
+        self.vwffilib.VW_FinishExample(self._vw, vwex)
+        self.called += 1
+        return score
+
+    def send (self, example):
+        self.saved.append(self.eval(example))
+
+    def recv (self):
+        try:
+            return self.saved.pop()
+        except IndexError:
+            raise ValueError("VowpalWabbitFFI.recv: nothing is pending",self)
+
+    def close (self):
+        if self._vw:
+            self.vwffilib.VW_Finish(self._vw)
+            self._vw = None
+
+    def __del__ (self):
+        self.close()
+
+    def __str__ (self):
+        return "VowpalWabbitFFI(%s,build=%s,model=%s,called=%d%s)" % (
+            self._vw,self.build,self.model,self.called,
+            (",saved=%f" % (self.saved) if self.saved else ""))
+
+    @staticmethod
+    def test (build):
+        vw_model_test = VowpalWabbitFFI(build=build)
+        print vw_model_test
+        score = vw_model_test.eval("1 |s p^the_man w^the w^man |t p^un_homme w^un w^homme")
+        vw_model_test.close()
+        print vw_model_test
+        assert 0.0==score
+
+class VowpalWabbit (object):
+    aparse = argparse.ArgumentParser(add_help=False)
+    aparse.add_argument('-vw-model',required=True,type=argparse.FileType('r'),
+                        help='VowpalWabbit model path')
+    gr = aparse.add_mutually_exclusive_group(required=True)
+    gr.add_argument('-vw-build',help='VowpalWabbit build path')
+    gr.add_argument('-vw-exe',type=argparse.FileType('r'),
+                    help='VowpalWabbit executable path')
+
+    @staticmethod
+    def get (parser, logger = None):
+        if parser.vw_build:
+            return VowpalWabbitFFI(parser=parser,logger=logger)
+        else:
+            return VowpalWabbitPipe(parser=parser,logger=logger)
 
 def safe_div (a, b):
-    if a == 0: return 0
-    else: return float(a) / b
+    return 0 if a == 0 else float(a) / b
+
+
+class RandomPair (object):
+    def __init__ (self, klass, title, **kwargs):
+        self.objects = [klass(title + "#" + str(i), **kwargs) for i in range(2)]
+
+    def add (self, *posargs, **kwargs):
+        self.objects[random.randint(0,1)].add(*posargs,**kwargs)
+
+    def __str__ (self):
+        return "\n".join([str(o) for o in self.objects])
+
+    @staticmethod
+    def stat (pairs):
+        'Return stats for all_metrics() call on each element of each pair.'
+        ret = dict()
+        for pair in pairs:
+            m1,m2 = [o.all_metrics() for o in pair.objects]
+            for metric,value in m1.iteritems():
+                try:
+                    rs = ret[metric]
+                except KeyError:
+                    rs = ret[metric] = runstat.NumStat('RP')
+                rs.add(value)
+            for metric,value in m2.iteritems():
+                ret[metric].add(value)
+        return ret
+
+    @staticmethod
+    def stat2string (pairs):
+        if len(pairs) == 0:
+            return ""
+        sp = RandomPair.stat(pairs)
+        w = max([len(m) for m in sp.iterkeys()])
+        return "\n"+"\n".join([" * %*s %s" % (w,m,rs.__str__("{:.2%}".format))
+                               for (m,rs) in sp.iteritems()])
 
 class ConfusionMX (object):
     logger = util.get_logger("ConfusionMX")
 
-    def __init__ (self, title):
+    def __init__ (self, title, NumRP=0):
         self.title = title
         self.mx = dict()
         self.afreq = dict()
         self.pfreq = dict()
+        self.halves = [RandomPair(ConfusionMX,title+"/half",NumRP=0)
+                       for _ in range(NumRP)]
 
     def add (self, actual, predicted, weight = 1):
         assert weight > 0
         self.afreq[actual] = self.afreq.get(actual,0) + 1
         self.pfreq[predicted] = self.pfreq.get(predicted,0) + 1
         self.mx[(actual,predicted)] = self.mx.get((actual,predicted),0) + weight
+        for rp in self.halves:
+            rp.add(actual, predicted, weight)
 
     # compute the marginal distributions
     def marginals (self):
@@ -241,6 +394,16 @@ class ConfusionMX (object):
     def is_binary (self):
         return len(self.afreq) == 2 and len(self.pfreq) == 2
 
+    def all_metrics (self):
+        if self.is_binary():
+            ret = self.binary_metrics()
+            ret["mcc"] = self.mcc()
+        else:
+            ret = dict([("phi",self.phi())])
+        ret["proficiency"] = self.proficiency()
+        ret["accuracy"] = self.accuracy()
+        return ret
+
     def __str__ (self):
         bm = self.binary_metrics()
         if bm is None:
@@ -259,10 +422,10 @@ class ConfusionMX (object):
         return ("ConfusionMX({}/{:,d}/{:,d}/{:,d}*{:,d}): Pro={:.2%} Acc={:.2%}({:.2%}) ".format(
             self.title,len(self.mx),total,len(actual),len(predicted),
             self.proficiency(),self.accuracy(),ConfusionMX.random_accuracy(actual))
-                + correlation + bm)
+                + correlation + bm + RandomPair.stat2string(self.halves))
 
     @staticmethod
-    def read_VW_DEMO_MNIST (ins):
+    def read_VW_demo_mnist (ins):
         "Parse the confusion matrix as printed by vw/demo/mnist/Makefile."
         header = ins.readline().split()
         if len(header) == 0:
@@ -293,10 +456,10 @@ class ConfusionMX (object):
         return cmx
 
     @staticmethod
-    def score_vw_oaa (predictions, base=None):
+    def score_vw_oaa (predictions, base=None, NumRP=500):
         """Score $(vw -t) output from a $(vw --oaa) model.
         IDs should be the true values, unless base is supplied."""
-        cmx = ConfusionMX(os.path.basename(predictions))
+        cmx = ConfusionMX(os.path.basename(predictions),NumRP=NumRP)
         if base is not None:
             base = ord(base[0])-1
         util.reading(predictions,ConfusionMX.logger)
@@ -327,7 +490,7 @@ class ConfusionMX (object):
 class MuLabCat (object):        # MultiLabelCategorization
     logger = util.get_logger("MuLabCat")
 
-    def __init__ (self, title, reassign = True):
+    def __init__ (self, title, reassign = True, NumRP = 0):
         self.title = title
         self.match = dict()
         self.actual = dict()
@@ -335,8 +498,10 @@ class MuLabCat (object):        # MultiLabelCategorization
         self.tp = dict()        # true positives
         self.observations = 0
         self.reassign = reassign
-        self.ace = runstat.NumStat("actual: cat/ex")
-        self.pce = runstat.NumStat("predicted: cat/ex")
+        self.ace = runstat.NumStat("actual: cat/ex",integer=True)
+        self.pce = runstat.NumStat("predicted: cat/ex",integer=True)
+        self.halves = [RandomPair(MuLabCat,title+"/half",NumRP=0,reassign=False)
+                       for _ in range(NumRP)]
 
     def taxonomy (self):
         taxonomy = set(self.predicted.iterkeys())
@@ -369,6 +534,8 @@ class MuLabCat (object):        # MultiLabelCategorization
             self.match[c] = self.match.get(c,0) + 1
         self.ace.add(len(actual))
         self.pce.add(len(predicted))
+        for rp in self.halves:
+            rp.add(actual, predicted)
 
     def precision (self):
         return safe_div(sum(self.match.itervalues()),
@@ -454,34 +621,43 @@ class MuLabCat (object):        # MultiLabelCategorization
             return 0
         return mutual_information / actual_entropy
 
+    def all_metrics (self):
+        f1,p,r = self.f1score()
+        return dict([("proficiency",self.proficiency_raw()),
+                     ("f1score",f1),("precision",p),("recall",r)])
+
     def __str__ (self):
         m = sum(self.match.itervalues())
         a = sum(self.actual.itervalues())
         p = sum(self.predicted.itervalues())
         taxonomy = self.taxonomy()
-        aec = runstat.NumStat("ex/cat",values=self.actual.itervalues())
+        aec = runstat.NumStat("ex/cat",values=self.actual.itervalues(),integer=True)
         am = len(taxonomy.difference(self.actual.iterkeys()))
         for _ in range(am):
             aec.add(0)
-        pec = runstat.NumStat("ex/cat",values=self.predicted.itervalues())
+        pec = runstat.NumStat("ex/cat",values=self.predicted.itervalues(),integer=True)
         pm = len(taxonomy.difference(self.predicted.iterkeys()))
         for _ in range(pm):
             pec.add(0)
+        toSt = "{:.2f}".format
         return ("MuLabCat({:}:m={:,d}/{:,d};a={:,d}/{:,d};p={:,d}/{:,d}):"
                 " Pre={:.2%} Rec={:.2%} (F1={:.2%}) Pro={:.2%}{:s}"
-                "\n    {:} {:}\n {:} {:}".format(
+                "\n    {:} {:}\n {:} {:}{:}".format(
                     self.title,len(self.match),m,len(self.actual),a,
                     len(self.predicted),p,safe_div(m,p),safe_div(m,a),
                     safe_div(2*m,a+p),self.proficiency_raw(),
                     "/{:.2%}".format(self.proficiency_assigned()) if self.reassign else "",
-                    self.ace,aec,self.pce,pec))
+                    self.ace.__str__(toSt),aec.__str__(toSt),
+                    self.pce.__str__(toSt),pec.__str__(toSt),
+                    RandomPair.stat2string(self.halves)))
 
     @staticmethod
-    def erd (actual, predicted, delimiter='\t', idcol=0, catcol=2):
+    def erd (actual, predicted, delimiter='\t', idcol=0, catcol=2, NumRP=500):
         """Score one file against another.
         File format: ...<id>...<category>...
         """
-        mlc = MuLabCat(util.title_from_2paths(actual,predicted),reassign=False)
+        mlc = MuLabCat(util.title_from_2paths(actual,predicted),
+                       reassign=False,NumRP=NumRP)
         adict = util.read_multimap(actual,delimiter,col1=idcol,col2=catcol,logger=MuLabCat.logger)
         pdict = util.read_multimap(predicted,delimiter,col1=idcol,col2=catcol,logger=MuLabCat.logger)
         for obj,acat in adict.iteritems():
@@ -492,13 +668,13 @@ class MuLabCat (object):        # MultiLabelCategorization
         return mlc
 
     @staticmethod
-    def score (actual, predicted, delimiter='\t', abeg=1, pbeg=1):
+    def score (actual, predicted, delimiter='\t', abeg=1, pbeg=1, NumRP=500):
         """Score one file against another.
         File format: <query string>[<delimiter><category>]+
         The queries in both files must be identical.
         abeg and pbeg are the columns where actual and pedicted categories start.
         """
-        mlc = MuLabCat(util.title_from_2paths(actual,predicted))
+        mlc = MuLabCat(util.title_from_2paths(actual,predicted),NumRP=NumRP)
         util.reading(actual,MuLabCat.logger)
         util.reading(predicted,MuLabCat.logger)
         empty = frozenset([''])
@@ -516,7 +692,7 @@ class MuLabCat (object):        # MultiLabelCategorization
     def random_stats (actual, repeat=1000, delimiter='\t', abeg=1):
         "Score a file against shuffled self."
         util.reading(actual,MuLabCat.logger)
-        nca = runstat.NumStat("actual")
+        nca = runstat.NumStat("cat/ex",integer=True)
         empty = frozenset([''])
         data = list()
         with open(actual) as af:
@@ -524,7 +700,8 @@ class MuLabCat (object):        # MultiLabelCategorization
                 sa = frozenset(sa[abeg:])-empty
                 data.append(sa)
                 nca.add(len(sa))
-        MuLabCat.logger.info("Read {:,d} lines: {:}".format(len(data),nca))
+        MuLabCat.logger.info("random_stats({:,d}): Read {:,d} lines: {:}".format(
+            repeat,len(data),nca.__str__("{:.2f}".format)))
         prre = runstat.NumStat("prec/recall")
         prof = runstat.NumStat("proficiency")
         for _ in range(repeat):
@@ -534,7 +711,7 @@ class MuLabCat (object):        # MultiLabelCategorization
             for i in range(len(data)):
                 mlc.add(data[i],data[indexes[i]])
             # MuLabCat.logger.info("%s",mlc)
-            (f1,p,r) = mlc.f1score()
+            f1,p,r = mlc.f1score()
             assert f1 == p and f1 == r
             prre.add(p)
             prof.add(mlc.proficiency_raw())
@@ -873,7 +1050,7 @@ if __name__ == '__main__':
                             with open(f) as inst:
                                 while True:
                                     try:
-                                        cm = ConfusionMX.read_VW_DEMO_MNIST(inst)
+                                        cm = ConfusionMX.read_VW_demo_mnist(inst)
                                     except Exception as ex:
                                         print ex
                                         break
@@ -905,9 +1082,9 @@ if __name__ == '__main__':
                 MuLabCat.random_stats(l1)
                 MuLabCat.random_stats(l2)
                 MuLabCat.random_stats(l3)
-                MuLabCat.score(l1,l2)
-                MuLabCat.score(l2,l3)
-                MuLabCat.score(l3,l1)
+                print MuLabCat.score(l1,l2)
+                print MuLabCat.score(l2,l3)
+                print MuLabCat.score(l3,l1)
             else:
                 MuLabCat.logger.info("[%s] does not exist",qedir)
             # hand-annotated 10k queries
@@ -919,8 +1096,20 @@ if __name__ == '__main__':
                 MuLabCat.random_stats(ann,abeg=2)
                 MuLabCat.random_stats(res)
                 MuLabCat.random_stats(res5)
-                MuLabCat.score(ann,res,abeg=2)
-                MuLabCat.score(ann,res5,abeg=2)
+                print MuLabCat.score(ann,res,abeg=2)
+                print MuLabCat.score(ann,res5,abeg=2)
+            else:
+                MuLabCat.logger.info("[%s] does not exist",qedir)
+            qedir = os.path.expandvars("$HOME/src/magnetic/research/erd")
+            if os.path.isdir(qedir):
+                trecA = os.path.join(qedir,"Trec_beta_annotations.txt")
+                trecR = os.path.join(qedir,"Trec_beta_results.txt")
+                print MuLabCat.erd(trecA,trecR)
+                qskA = os.path.join(qedir,"queries_sk_annotation.txt")
+                qskR = os.path.join(qedir,"queries_sk_results.txt")
+                qskRA = os.path.join(qedir,"queries_sk_results_ascii.txt")
+                print MuLabCat.erd(qskA,qskR)
+                print MuLabCat.erd(qskA,qskRA)
             else:
                 MuLabCat.logger.info("[%s] does not exist",qedir)
     else:
