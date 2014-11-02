@@ -29,7 +29,6 @@ Books & Literature	Arts & Entertainment\Books and Literature
 pretty little liars	Arts & Entertainment\Books and Literature
 notebooks	Arts & Entertainment\Books and Literature
 nbc news	Arts & Entertainment\Books and Literature
-guns	Arts & Entertainment\Books and Literature
 win prizes	Arts & Entertainment\Books and Literature
 hemlock grove	Arts & Entertainment\Books and Literature
 letters	Arts & Entertainment\Books and Literature
@@ -53,7 +52,6 @@ book club	Arts & Entertainment\Books and Literature
 harry potter deathly hallows	Arts & Entertainment\Books and Literature
 american literature	Arts & Entertainment\Books and Literature
 anne frank arrest 70th anniversary	Arts & Entertainment\Books and Literature
-Guns	Arts & Entertainment\Books and Literature
 fantasy	Arts & Entertainment\Books and Literature
 lemonade mouth	Arts & Entertainment\Books and Literature
 tolkien-archives	Arts & Entertainment\Books and Literature
@@ -200,7 +198,6 @@ pictures	Arts & Entertainment\Hobbies\Photography
 photos	Arts & Entertainment\Hobbies\Photography
 digital image manipulation	Arts & Entertainment\Hobbies\Photography
 General Painting Technique	Arts & Entertainment\Hobbies\Photography
-erotic	Arts & Entertainment\Hobbies\Photography
 best digital photos	Arts & Entertainment\Hobbies\Photography
 digital photos	Uncategorized
 photographs	Arts & Entertainment\Hobbies\Photography
@@ -289,7 +286,6 @@ true blood	Arts & Entertainment\Movies/Television
 disney channel	Arts & Entertainment\Movies/Television
 feed beast	Arts & Entertainment\Movies/Television
 skydiver dies	Arts & Entertainment\Movies/Television
-filme porno	Arts & Entertainment\Movies/Television
 curtains	Uncategorized
 futurama	Arts & Entertainment\Movies/Television
 wcvb	Arts & Entertainment\Movies/Television
@@ -335,7 +331,6 @@ the voice	Arts & Entertainment\Movies/Television
 tumble	Uncategorized
 wyff	Arts & Entertainment\Movies/Television
 cartoon network	Arts & Entertainment\Movies/Television
-film porno	Arts & Entertainment\Movies/Television
 jessica alba and her start up the honest company	Arts & Entertainment\Movies/Television
 Garden State	Arts & Entertainment\Movies/Television
 free tv shows	Arts & Entertainment\Movies/Television
@@ -503,7 +498,6 @@ the purge	Arts & Entertainment\Movies/Television
 movies times	Arts & Entertainment\Movies/Television
 pblv	Arts & Entertainment\Movies/Television
 online movies	Arts & Entertainment\Movies/Television
-filme xxx	Arts & Entertainment\Movies/Television
 noah ritter	Arts & Entertainment\Movies/Television
 apocalypse rising	Arts & Entertainment\Movies/Television
 naruto shippuden episode 370	Arts & Entertainment\Movies/Television
@@ -734,7 +728,6 @@ Hello guys	Uncategorized
 tyra banks sequel	Arts & Entertainment\Pop Culture & Celebrity News
 john lennon	Arts & Entertainment\Pop Culture & Celebrity News
 katie price	Arts & Entertainment\Pop Culture & Celebrity News
-sex tape|sextape	Negative\Mature/Adult
 ontd	Arts & Entertainment\Pop Culture & Celebrity News
 media player	Uncategorized
 Celebrity	Arts & Entertainment\Pop Culture & Celebrity News
@@ -908,7 +901,6 @@ driving traffic	Automotive
 hyundai Genesis	Automotive
 online car insurance	Automotive
 classic cars	Automotive
-weapons	Negative\Firearms
 dodge Avenger	Automotive
 car repair manual car	Automotive
 car car	Automotive
@@ -922,7 +914,6 @@ Driveway Paving	Automotive
 dodge Challenger	Automotive
 chevrolet Malibu	Automotive
 car loan	Automotive
-weapon	Sports\Game & Fishing
 car audio	Automotive
 chevrolet Camaro	Automotive
 bugatti veyron	Automotive
@@ -2377,7 +2368,6 @@ login	Electronics & Computing\Computer Security
 Antivirus Software	Electronics & Computing\Computer Security
 Network Security	Electronics & Computing\Computer Security
 internet security	Electronics & Computing\Computer Security
-crime	Law-Government-Politics
 Ricoh	Electronics & Computing\Consumer Electronics
 Casio	Electronics & Computing\Consumer Electronics
 philips	Electronics & Computing\Consumer Electronics
@@ -2900,7 +2890,6 @@ Moms	Family & Parenting
 Children	Family & Parenting
 Parenting	Family & Parenting
 moms and parents videos	Family & Parenting
-hot mom|sexy mom	Family & Parenting
 mm moms	Family & Parenting
 the new parents guide	Family & Parenting
 parenting information	Family & Parenting
@@ -2928,7 +2917,6 @@ grandparent names	Family & Parenting
 who is star lords father	Family & Parenting
 new mothers	Family & Parenting
 christmas decorations	Family & Parenting
-cougar german|german cougar|german milf|german mom|german mother|milf german	Negative\Mature/Adult
 babycenter	Family & Parenting
 asl? ak?ay	Family & Parenting
 grand ma|grandma|grandmom	Family & Parenting
@@ -2936,7 +2924,6 @@ home reading report of the story of the aged mother	Health\Aging and Geriatrics
 mother s day	Family & Parenting
 cop parents shot	Family & Parenting
 grand mother|grandmother|granny	Family & Parenting
-handjob|hand job|tugjob|tug job&mom|mother|milf	Family & Parenting
 people family relationship	Family & Parenting
 new parent checklists	Family & Parenting
 horoscop urania	Family & Parenting
@@ -3039,24 +3026,20 @@ acne cure	Family & Parenting\Kids & Teens
 man	Family & Parenting\Kids & Teens
 natural testosterone supplements	Family & Parenting\Kids & Teens
 Parenting Tweens and Teens	Family & Parenting\Kids & Teens
-gay	Uncategorized
 boys	Family & Parenting\Kids & Teens
 Teen Health	Family & Parenting\Kids & Teens
 truth or dare	Family & Parenting\Kids & Teens
 teen choice award	Family & Parenting\Kids & Teens
 summer camp	Family & Parenting\Kids & Teens
 teen titans	Family & Parenting\Kids & Teens
-adult	Negative\Mature/Adult
 how to raise testosterone	Family & Parenting\Kids & Teens
 testosterone booster side effects	Family & Parenting\Kids & Teens
 Men	Family & Parenting\Kids & Teens
-andreina samudio	Family & Parenting\Kids & Teens
 teenager	Family & Parenting\Kids & Teens
 men s magazine	Uncategorized
 k-pop stars	Arts & Entertainment\Music
 teenagers	Family & Parenting\Kids & Teens
 male hormones	Family & Parenting\Kids & Teens
-adult-academy	Family & Parenting\Kids & Teens
 Pregnancy	Family & Parenting\Pregnancy
 pregnancy advice	Family & Parenting\Pregnancy
 pregnancy tips	Family & Parenting\Pregnancy
@@ -3827,7 +3810,6 @@ starbucks.com	Food & Drink\Non-Alcoholic Beverages\Coffee/Tea
 espresso machines	Food & Drink\Non-Alcoholic Beverages\Coffee/Tea
 espresso maker	Food & Drink\Non-Alcoholic Beverages\Coffee/Tea
 camellia	Food & Drink\Non-Alcoholic Beverages\Coffee/Tea
-blowjob	Negative\Mature/Adult
 energy drinks	Food & Drink\Non-Alcoholic Beverages\Coffee/Tea
 bakeries	Food & Drink\Non-Alcoholic Beverages\Coffee/Tea
 restaurants	Food & Drink\Restaurants
@@ -4052,7 +4034,6 @@ clash of clans hack	Games\Video & Computer Games
 arcade games	Games\Video & Computer Games
 heroes might magic	Games\Video & Computer Games
 fuel	Games\Video & Computer Games
-sex games	Games\Video & Computer Games
 kid kid	Games\Video & Computer Games
 pop	Games\Video & Computer Games
 Battlenet	Games\Video & Computer Games
@@ -4227,7 +4208,6 @@ injuries	Health
 Health+and+Wellness	Health
 ymca	Health
 Health Insurance Issues	Health
-masturbation	Negative\Mature/Adult
 quest diagnostics appointment	Health
 be healthy	Health
 what is ebola virus disease	Health
@@ -4239,7 +4219,6 @@ criminal law	Health
 1988	Health
 drinking	Health
 cost of health insurance for kids	Health
-masterbating public|masturbation public|public masterbating|public masturbation	Negative\Mature/Adult
 health and beauty	Health
 care	Uncategorized
 nursing homes	Health\Aging and Geriatrics
@@ -4307,13 +4286,11 @@ Amyotrophic Lateral Sclerosis ALS	Health\Health Conditions
 Restless Leg Syndrome	Health\Health Conditions
 lyme disease	Health\Health Conditions
 pancreatitis	Health\Health Conditions
-rape	Negative\Mature/Adult
 hangover easy	Health\Health Conditions
 Bells Palsy	Health\Health Conditions
 Endocrine Disorders	Health\Health Conditions
 eczema	Health\Health Conditions
 endometriosis	Health\Health Conditions
-voyeur	Negative\Mature/Adult
 Hepatitis	Health\Health Conditions
 Costochondritis	Health\Health Conditions
 neuropathy	Health\Health Conditions
@@ -4328,7 +4305,6 @@ massage|masseuse	Health
 learning aids	Education
 massage	Health
 condom	Health\Health Conditions\AIDS/HIV
-/massage-foreplay.html	Health
 masseur|masseuse	Health
 Allergies	Health\Health Conditions\Allergies
 allergy	Health\Health Conditions\Allergies
@@ -5365,7 +5341,6 @@ cemetery	Lifestyle\Religion and Belief
 graveyard	Lifestyle\Religion and Belief
 padres	Sports\Baseball
 Musical instruments	Lifestyle\Religion and Belief
-marijuana	Health\Pharmacy
 creed	Lifestyle\Religion and Belief
 festivals	Lifestyle\Religion and Belief
 Latter-Day Saints	Lifestyle\Religion and Belief
@@ -5384,13 +5359,11 @@ sole collector	Uncategorized
 archbishop	Lifestyle\Religion and Belief
 cross	Lifestyle\Religion and Belief
 accommodation	Lifestyle\Religion and Belief
-silkroad	Lifestyle\Religion and Belief
 calendar	Lifestyle\Religion and Belief
 xmas	Lifestyle\Religion and Belief
 violent-epiphany	Lifestyle\Religion and Belief
 x-mas	Lifestyle\Religion and Belief
 thai|thailand
-adultery	Lifestyle\Religion and Belief
 puritan pride	Arts & Entertainment\Books and Literature
 festival	Lifestyle\Religion and Belief
 bathing	Lifestyle\Religion and Belief
@@ -5483,91 +5456,17 @@ women	Lifestyle\Women's interest
 woman	Lifestyle\Women's interest
 g37 compact	Negative\Firearms
 g37 performance	Negative\Firearms
-magazine	News
-gun	Negative\Firearms
-crossfire	Electronics & Computing\Laptop
-Guns & Weapons	Negative\Firearms
-shooting range	Negative\Firearms
-range shooting	Negative\Firearms
 Brick Cleaning & Maintenance	Uncategorized
-handgun dealers	Negative\Firearms
-Firearms	Negative\Firearms
 Deck Maintenance & Cleaning	Uncategorized
-police school	Uncategorized
-rifle	Negative\Firearms
-magazines	Negative\Firearms
-crossbow	Negative\Firearms
-crossbow comparison	Negative\Firearms
-Hammers	Negative\Firearms
-melee weapons	Negative\Firearms
-firearms	Negative\Firearms
 AR	Negative\Firearms
 arizona state symbols	World Localities\North America
 ar	Negative\Firearms
-rifles	Negative\Firearms
 global background check	Careers\Job Search
 AR state employees	Negative\Firearms
 AR employees	Negative\Firearms
-sex	Negative\Mature/Adult
-porn	Negative\Mature/Adult
-xxx	Negative\Mature/Adult
-hentai	Negative\Mature/Adult
-nude	Negative\Mature/Adult
-xhamster	Negative\Mature/Adult
-sex tape	Negative\Mature/Adult
-milf	Negative\Mature/Adult
-Lesbian	Negative\Mature/Adult
-brazzers	Negative\Mature/Adult
-youporn	Negative\Mature/Adult
-rape porn	Negative\Mature/Adult
-Free porn	Negative\Mature/Adult
-mateur new porn	Negative\Mature/Adult
-phim sex	Negative\Mature/Adult
-pornotube	Negative\Mature/Adult
-Porn	Negative\Mature/Adult
-kostenlose pornos	Negative\Mature/Adult
-pussy	Negative\Mature/Adult
-pornhub	Negative\Mature/Adult
-deutsche pornos	Negative\Mature/Adult
-gang bang|gangbang	Negative\Mature/Adult
-slut	World Localities
-red tube	Negative\Mature/Adult
-Sex	Negative\Mature/Adult
-free porn	Negative\Mature/Adult
-free sex tonight	Negative\Mature/Adult
-cartoon sex	Negative\Mature/Adult
-orgasm	Negative\Mature/Adult
-threesome	Negative\Mature/Adult
-hood porn	Negative\Mature/Adult
-pornos	Negative\Mature/Adult
-porn sites rated	Negative\Mature/Adult
-lesbian	Negative\Mature/Adult
-she male|shemale	Negative\Mature/Adult
 3 ps	Negative\Mature/Adult
-amateur|amatuer|amature&threesome|three some|3some|3 some	Negative\Mature/Adult
 free gallery	Negative\Mature/Adult
-hard sex tube	Negative\Mature/Adult
-free black porn	Negative\Mature/Adult
-milf|mother i like to fuck	Negative\Mature/Adult
-amateur milf|amatuer milf|amature milf|milf amateur|milf amatuer|milf amature	Negative\Mature/Adult
-3some	Negative\Mature/Adult
-Xxx	Negative\Mature/Adult
-www.xxx	Negative\Mature/Adult
-erotica	Negative\Mature/Adult
-videos pornos	Negative\Mature/Adult
-hard sex	Negative\Mature/Adult
-Hentai	Negative\Mature/Adult
-cartoon porn	Negative\Mature/Adult
-fuck public|public fuck|public sex|publicsex|sex public	Negative\Mature/Adult
-Tobacco	Negative\Tobacco
-cigars	Negative\Tobacco
-Vaporizer	Negative\Tobacco
-tobacco	Negative\Tobacco
 forest	Business\Agriculture & Forestry
-cigar	Negative\Tobacco
-cigarette	Negative\Tobacco
-electronic cigarette	Negative\Tobacco
-vaporizer concentrates	Negative\Tobacco
 News	News
 news	News
 International News	News
@@ -5951,7 +5850,6 @@ faq	Online communities\Forums
 video	Online communities\Photo & video sharing
 photo galleries	Uncategorized
 videos	Online communities\Photo & video sharing
-redtube	Online communities\Photo & video sharing
 Videos	Online communities\Photo & video sharing
 xvideos	Online communities\Photo & video sharing
 Social Networks & web 2.0	Online communities\Social networking
@@ -6050,11 +5948,9 @@ treadmills	Pets & Animals
 zebra	Pets & Animals
 Water Pond Fishes	Pets & Animals
 animal doctor	Health
-bdsm	Negative\Mature/Adult
 sleeping	Pets & Animals
 Carbon Monoxide	Pets & Animals
 joint and muscle pain	Health\Health Conditions
-freak	Health
 face	Pets & Animals
 elephant	Pets & Animals
 spotlighting cool new mac products	Pets & Animals
@@ -6739,7 +6635,6 @@ events	Uncategorized
 gawker	News
 fantasy football	Sports
 Handball	Sports
-gun specs	Negative\Firearms
 Painting Tips	Sports
 amateur|amatuer|amature	Sports
 runner knee	Sports
@@ -7372,7 +7267,6 @@ bollywood actresses	Style & Fashion\Fashion
 design	Style & Fashion\Fashion
 red carpet fashion at the 2014 grammy awards	Style & Fashion\Fashion
 page title	Uncategorized
-rigin-studio	Style & Fashion\Fashion
 swatch	Style & Fashion\Fashion
 pallet	Sciences\Ecology & Environment
 Coach	Uncategorized
@@ -8379,7 +8273,6 @@ paint
 v8	Uncategorized
 carpet
 Box of Cheerios	Uncategorized
-anal	Negative\Mature/Adult
 Interior	Uncategorized
 national	Uncategorized
 mi	Uncategorized
@@ -8445,7 +8338,6 @@ ePhoto	Uncategorized
 sd card	Electronics & Computing\Consumer Electronics
 action apps	Uncategorized
 presidential election
-cum inside|cuminside	Uncategorized
 fcc	Internet & Telecom\Service Providers
 Duct Work	Uncategorized
 buying home	Uncategorized
@@ -8527,14 +8419,12 @@ Specialty Audio	Uncategorized
 police supplies	Uncategorized
 divergent	Uncategorized
 piano	Uncategorized
-fuck	Negative\Mature/Adult
 saturn performance	Uncategorized
 athletics	Uncategorized
 arch programs	Uncategorized
 architecture programs	Uncategorized
 WI	Uncategorized
 kate middleton	Arts & Entertainment\Pop Culture & Celebrity News
-mature	Negative\Mature/Adult
 activities	Uncategorized
 ARM	Uncategorized
 brietbart	Uncategorized
@@ -8562,7 +8452,6 @@ organic foods	Food & Drink
 pinball	Uncategorized
 Foundation Repair	Arts & Entertainment\Books and Literature
 tents	Travel
-mafia	Uncategorized
 translation services	Uncategorized
 Paintings	Arts & Entertainment\Hobbies\Photography
 Home Additions	Uncategorized
@@ -8601,7 +8490,6 @@ expecting	Uncategorized
 wheelchair	Health
 Cardinal	Uncategorized
 i ready	Uncategorized
-boobs	Negative\Mature/Adult
 photocard forum	World Localities
 dealers	Uncategorized
 vote uk forum	Uncategorized
@@ -8670,7 +8558,6 @@ ladder	Uncategorized
 al	Uncategorized
 microwave ovens	Food & Drink
 family vacations	Uncategorized
-porno mexicano	Negative\Mature/Adult
 trees	Business\Agriculture & Forestry
 dinar	Uncategorized
 singles	Uncategorized
@@ -8718,7 +8605,6 @@ austin nesties	Uncategorized
 c	Uncategorized
 3-b-s	Uncategorized
 PR	Uncategorized
-amateur chubby|chubby amateur|chubby amatuer|chunky amateur	Uncategorized
 tires for sale	Uncategorized
 Sixth
 construction management	Uncategorized
@@ -8823,7 +8709,6 @@ convention	Uncategorized
 surgery center	Health
 and even the installed a	Uncategorized
 paul george sleeps with teammates wife	Uncategorized
-ASC	Uncategorized
 beds	Uncategorized
 cheapest	Uncategorized
 ukulele	Uncategorized
@@ -8879,9 +8764,7 @@ nicknames for grandparents	Uncategorized
 nicknames list	Uncategorized
 Flush Clip Mount Ceiling	Uncategorized
 knob	Uncategorized
-18 year|18 year old|18 yo|18 yr|18yo|18yr	Uncategorized
 code	Uncategorized
-smoker	Uncategorized
 films	Arts & Entertainment\Hobbies\Photography
 consulting	Uncategorized
 bissell	Uncategorized
@@ -8905,7 +8788,6 @@ Mount Rushmore State	World Localities
 Equality State	World Localities
 Lone Star State	World Localities
 d	Uncategorized
-porno izle	Negative\Mature/Adult
 my	Uncategorized
 calendario c vico escolar	Uncategorized
 Roughrider State	Uncategorized
@@ -8922,14 +8804,12 @@ walkthrough	Uncategorized
 agent	Uncategorized
 tricks	Uncategorized
 300	Uncategorized
-tits	Negative\Mature/Adult
 loves	Lifestyle\Religion and Belief
 austin	World Localities
 unlockables	Uncategorized
 UT	Uncategorized
 junk removal	Uncategorized
 khloe kardashian	Arts & Entertainment\Movies/Television
-www x x x c o m	Uncategorized
 hel	Uncategorized
 sensual	Pets & Animals
 female	Uncategorized
@@ -8958,7 +8838,6 @@ Hey Guys	Uncategorized
 Find and compare homes	Uncategorized
 digital	Uncategorized
 andi and josh	Uncategorized
-smokers	Uncategorized
 longboards	Uncategorized
 democrats	Law-Government-Politics\Politics
 dinos	Uncategorized
@@ -8986,7 +8865,6 @@ press	Uncategorized
 dark	Uncategorized
 sandwiches	Food & Drink
 khmer avenue	Uncategorized
-video porno	Negative\Mature/Adult
 diablo 3	Games\Video & Computer Games
 bulbs	Home & Garden\Gardening & Landscaping
 cheap cruises	Uncategorized
@@ -9013,7 +8891,6 @@ local events	Uncategorized
 date ideas	Uncategorized
 Creating Theme Gardens	Uncategorized
 military	Uncategorized
-porno francais	Negative\Mature/Adult
 jennifer korbin	Uncategorized
 botanical illustration	Uncategorized
 l	Uncategorized
@@ -9023,7 +8900,6 @@ seating	Uncategorized
 Civic	Uncategorized
 quotes	Uncategorized
 chalk	Uncategorized
-videos porno gratis	Negative\Mature/Adult
 Garden Defense	Uncategorized
 temperature data	Uncategorized
 For Her	Uncategorized
@@ -9082,7 +8958,6 @@ arab	Lifestyle\Ethnic & Identity Groups
 ibd	Uncategorized
 numbers	Uncategorized
 310 shake	Arts & Entertainment\Movies/Television
-dick	Negative\Mature/Adult
 I	Uncategorized
 app factor	Electronics & Computing\Cell Phone & PDA
 lpg	Uncategorized
@@ -9093,7 +8968,6 @@ decorating	Uncategorized
 untitled	Uncategorized
 zone	Uncategorized
 nsfw	Online communities\Forums
-ass	Uncategorized
 Weatherizing & Winterizing	Uncategorized
 anti spyware	Electronics & Computing\Computer Security
 Well	Uncategorized
@@ -9113,7 +8987,6 @@ perevod	Uncategorized
 celebration	Uncategorized
 purple	Uncategorized
 sodas	Uncategorized
-cam model monique	Uncategorized
 appgravity -android-apps -communication whatsap	Uncategorized
 omb	Uncategorized
 moen	Uncategorized
@@ -9198,8 +9071,6 @@ sh	Uncategorized
 featured models	Uncategorized
 m.d.	Health
 chexsystems	Uncategorized
-hood amateurs	Uncategorized
-free babe galleries	Uncategorized
 gallery pictures	Uncategorized
 delaware state symbols	World Localities\North America
 tmbsl 4 0	Uncategorized
@@ -9231,7 +9102,6 @@ house listings	Uncategorized
 bollywood	Uncategorized
 fiu	Education
 chihuahua	Uncategorized
-compilation|cumpilation	Uncategorized
 laserjet	Uncategorized
 maaco	Uncategorized
 Paint
@@ -9240,7 +9110,6 @@ steel industry	Home & Garden\Home Repair & Improvements
 peach	Uncategorized
 Camaro	Automotive
 Corolla	Uncategorized
-bitch	Uncategorized
 - forum	World Localities
 area code	World Localities
 pagina nueva	Uncategorized
@@ -9336,8 +9205,6 @@ work/ work	Uncategorized
 Email Campaigns	Uncategorized
 49ers
 it-lore	Uncategorized
-racconti erotici	Uncategorized
-swingers	Uncategorized
 colorado facts	Uncategorized
 descargar musica	Uncategorized
 mi corazon es tuyo capitulos completos
@@ -9394,7 +9261,6 @@ wood letter	Uncategorized
 DIM Star	Uncategorized
 crown	Law-Government-Politics
 clerical	Uncategorized
-videos porno	Negative\Mature/Adult
 skymall	Uncategorized
 contextual	Business\Advertising & Marketing
 Greenville	Uncategorized
@@ -9403,10 +9269,8 @@ Unlockables	Uncategorized
 graduate architecture programs	Uncategorized
 bellos-momentos	Uncategorized
 1435	Uncategorized
-american terrorist casualties	Uncategorized
 violet	Uncategorized
 planter	Uncategorized
-escort	Uncategorized
 avenue.com	Uncategorized
 trailer	Uncategorized
 Questions & Answers about Bath Repair	Uncategorized
@@ -9437,7 +9301,6 @@ bokep indo	Uncategorized
 *c Hi there	Uncategorized
 immigration reform	Uncategorized
 medicare billing	Uncategorized
-cock	Negative\Mature/Adult
 how did ebola za re get to guinea	Uncategorized
 medicare charges	Uncategorized
 Mid-American	Uncategorized
@@ -9450,7 +9313,6 @@ pelis 24	Uncategorized
 lahara	Uncategorized
 Special Events	Uncategorized
 romance	Uncategorized
-turk porno	Negative\Mature/Adult
 DE	Uncategorized
 expressions	Uncategorized
 selecting	Uncategorized
@@ -9484,7 +9346,6 @@ plaid	Uncategorized
 wcf boards	Uncategorized
 free video	Uncategorized
 butt	Uncategorized
-hooker	Negative\Mature/Adult
 fs exclue	Uncategorized
 apps store	Uncategorized
 your name	Uncategorized
@@ -9552,7 +9413,6 @@ togel singapore	Uncategorized
 the lounge	Uncategorized
 scorpio	Uncategorized
 Jackson	Uncategorized
-hood amateur	Uncategorized
 bruins	Uncategorized
 deficit	Uncategorized
 zelda	Uncategorized
@@ -9569,7 +9429,6 @@ spells	Uncategorized
 benefits	Uncategorized
 glass paint
 jessica:featured model	Uncategorized
-sexy videos	Uncategorized
 redplum	Uncategorized
 duties	Uncategorized
 velvet	Uncategorized
@@ -9581,11 +9440,9 @@ eighties	Finance\Banking
 lights turn on	Uncategorized
 LLC	Uncategorized
 9545	Uncategorized
-deutsche porno	Negative\Mature/Adult
 odmp	Uncategorized
 boss	Uncategorized
 body	Uncategorized
-Vaporizers	Uncategorized
 listen	Uncategorized
 hurley	Uncategorized
 Accessory	Uncategorized
@@ -9676,7 +9533,6 @@ paris	World Localities
 Atlanta	World Localities
 italy	World Localities
 tours	World Localities
-porno gratis	Negative\Mature/Adult
 Sunshine State	World Localities
 Grand Canyon State	World Localities
 despierre-bijoux	World Localities
@@ -9719,7 +9575,6 @@ cafes	Food & Drink\Non-Alcoholic Beverages\Coffee/Tea
 brazil	World Localities
 this is plymouth	World Localities
 everest	World Localities
-sexo gratis	Uncategorized
 russia	World Localities
 greece	World Localities
 free things to do in las vegas: attractions	World Localities
