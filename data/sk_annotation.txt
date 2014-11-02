@@ -1,0 +1,107 @@
+1	0	Správa (žurnalistika)	spravy
+3	0	Žart	vtipy
+6	0	Upírske denníky (seriál)	upirske denniky
+6	0	Online	online
+7	0	Počasie	počasie
+7	0	Korfu	korfu
+8	0	Počasie	počasie
+8	0	Rodos (ostrov)	rhodos
+9	0	Počasie	počasie
+9	0	Chalkidiki	chalkidiki
+10	0	Počasie	počasie
+11	0	Počasie	počasie
+11	0	Bulharsko	bulharsku
+12	0	Denník SME	denník sme
+16	0	Rozprávka	rozpravky
+18	0	Kartová hra	karty
+19	0	Počasie	počasie
+19	0	Bulharsko	bulharsko
+20	0	Počasie	počasie
+20	0	Lefkada (ostrov)	lefkada
+21	0	Zhubný nádor	rakovina
+21	0	Predstojnica	prostaty
+22	0	Šport	sportove
+24	0	Profesionáli (slovenský seriál)	profesionáli
+26	0	Nevidzany (okres Zlaté Moravce)	nevidzany
+26	1	Nevidzany (okres Prievidza)	nevidzany
+27	0	Počasie	počasie
+27	0	Kos (ostrov)	kos
+28	0	Počasie	počasie
+28	0	Korfu	korfu
+29	0	Počasie	počasie
+29	0	zakynthose	Zakynthos (ostrov)
+31	0	Voda	vodu	1
+32	0	Rapovce	rapovce	1
+32	0	Kúpalisko	kúpalisko	1
+34	0	Zuzana	zuzana	1
+35	0	Korfu	ostrov korfu	1
+36	0	Počasie	počasie	1
+36	0	Tunis	tunis	1
+38	0	Rozprávka	rozpravky	1
+39	0	Denník SME	sme	1
+40	0	Kalkulačka	kalkulačka	1
+40	0	Úver	úverová	1
+42	0	Škoda Octavia	skoda octavia	1
+42	1	Škoda Octavia (1959)	skoda octavia	1
+43	0	Denník SME	sme	1
+44	0	Správa (žurnalistika)	správy	1
+45	0	Žart	vtipne
+46	0	Index telesnej hmotnosti	bmi	1
+48	0	Počasie	počasie	1
+48	0	Korfu (mesto)	korfu	1
+48	1	Počasie	počasie	1
+48	1	Korfu	korfu	1
+49	0	Rodinné prípady	rodinne pripady	1
+50	0	Rozprávka	rozpravky	1
+50	0	Online	online	1
+51	0	Škoda Auto	skoda	1
+51	0	Karburátor	karburátor	1
+52	0	Slovensko	slovenske	1
+52	0	Správa (žurnalistika)	spravy	1
+55	0	Euromajdan	ukrajinská kríza	1
+56	0	Upírske denníky (seriál)	upírske denníky	1
+57	0	Kalkulačka	kalkulacka	1
+58	0	Kartová hra	karty	1
+60	0	Hudba	hudba	1
+61	0	Choroba	choroby	1
+62	0	Správa (žurnalistika)	správy	1
+63	0	Nicki Minaj	nicky minaj	1
+64	0	Olej (všeobecne)	olej	1
+66	0	Počasie	počasie	1
+66	0	Kréta	krete	1
+68	0	Zhubný nádor	rakovina	1
+68	0	Žalúdok	žaludku	1
+69	0	Denník SME	sme	1
+70	0	Susedia (slovenský seriál)	susedia	1
+71	0	Mzda	mzdy	1
+72	0	Mzda	mzdy	1
+73	0	Kartová hra	kariet	1
+76	0	Aloa pravá	aloe	1
+77	0	Bulharsko	bulharsko	1
+77	0	Počasie	počasie	1
+78	0	Celiakia	celiakia	1
+79	0	Česko-Slovensko	cesko slovenske	1
+79	0	Peniaze	peniaze	1
+81	0	Bolesť	bolesti	1
+83	0	Košice	kosiciach	1
+85	0	Hurgada	hurghada	1
+85	0	Egypt	egypt	1
+85	0	Počasie	počasie	1
+86	0	Draslík	draslíka	1
+86	0	Fosfor	fosforu	1
+86	0	Potravina	potraviny	1
+88	0	Korzár (denník)	korzár	1
+89	0	Zhubný nádor	rakovina	1
+89	0	Kvasinka	kvasinky	1
+90	0	Lev (súhvezdie)	lev	1
+90	0	Ryby (súhvezdie)	ryby	1
+90	0	Muž	muz	1
+90	0	Žena	zena	1
+91	0	Pohotovosť (seriál)	pohotovost	1
+92	0	Škoda Octavia	skoda octavia	1
+93	0	Škoda Yeti	skoda yeti	1
+95	0	Slovensko	slovensku	1
+97	0	Diabetes mellitus	cukrovka	1
+98	0	Učiteľ	ucitel	1
+98	0	Nemecko	nemecku	1
+99	0	Svidník	svidnik	1

@@ -1,0 +1,97 @@
+6	0	Upírske denníky (seriál)	upirske denniky	0.32
+7	0	Korfu (mesto)	korfu	0.33
+7	1	Korfu	korfu	0.33
+8	0	14. storočie	14	0.11
+8	1	14. máj	14	0.1
+8	2	14. február	14	0.1
+8	3	14. jún	14	0.1
+8	4	14. november	14	0.05
+8	5	14	14	0.05
+9	0	Chalkidiki	chalkidiki	0.45
+10	0	15. február	15	0.15
+10	0	Marsa (Aude)	marsa	0.17
+10	1	15. storočie	15	0.11
+10	1	Marsa (Aude)	marsa	0.17
+10	2	15. január	15	0.1
+10	2	Marsa (Aude)	marsa	0.17
+10	3	15. marec	15	0.1
+10	3	Marsa (Aude)	marsa	0.17
+10	4	15. september	15	0.1
+10	4	Marsa (Aude)	marsa	0.17
+11	0	Bulharsko	bulharsku	0.16
+12	0	Denník SME	denník sme	0.29
+13	0	Obsah (filozofia)	obsah	0.22
+13	1	Rozloha	obsah	0.13
+15	0	.sk	sk	0.15
+19	0	Bulharsko	bulharsko	0.19
+20	0	Lefkada (ostrov)	lefkada	0.55
+21	0	Rakovina prostaty	rakovina prostaty	0.39
+26	0	Nevidzany (okres Zlaté Moravce)	nevidzany	0.29
+26	1	Nevidzany (okres Prievidza)	nevidzany	0.28
+27	0	Kos (sopka)	kos	0.18
+27	1	Koš (obec na Slovensku)	kos	0.17
+27	2	Kos (ostrov)	kos	0.11
+28	0	Korfu (mesto)	korfu	0.28
+28	1	Korfu	korfu	0.24
+30	0	Žila	zily	0.08
+32	0	Rapovce	rapovce	0.45
+34	0	Zuzana	zuzana	0.21
+35	0	Korfu	korfu	0.2
+35	0	Ostrov	ostrov	0.1
+35	1	Korfu (mesto)	korfu	0.12
+35	1	Ostrov	ostrov	0.1
+36	0	Tunis	tunis	0.48
+37	0	.cz	cz	0.21
+39	0	Denník SME	sme	0.25
+41	0	.sk	sk	0.17
+42	0	Škoda Octavia	skoda octavia	0.24
+42	1	Škoda Octavia (1959)	skoda octavia	0.23
+43	0	Denník SME	sme	0.32
+44	0	.sk	sk	0.17
+46	0	Index telesnej hmotnosti	bmi	0.29
+47	0	Online	online	0.16
+48	0	Korfu (mesto)	korfu	0.24
+48	1	Korfu	korfu	0.23
+50	0	Online	online	0.15
+56	0	4. storočie	4	0.16
+56	1	4. január	4	0.15
+56	2	4. máj	4	0.15
+56	3	4. február	4	0.05
+57	0	Kalkulačka	kalkulacka	0.24
+60	0	Hudba	hudba	0.16
+61	0	Choroba	choroby	0.16
+64	0	Olej (všeobecne)	olej	0.17
+66	0	Kréta	krete	0.09
+68	0	Rakovina (album)	rakovina	0.14
+69	0	Denník SME	sme	0.33
+70	0	Susedia (slovenský seriál)	susedia	0.28
+71	0	2014	2014	0.14
+71	1	Majstrovstvá sveta v ľadovom hokeji 2014	2014	0.09
+72	0	2014	2014	0.16
+72	1	Majstrovstvá sveta v ľadovom hokeji 2014	2014	0.1
+73	0	Význam	vyznam	0.15
+77	0	Bulharsko	bulharsko	0.19
+78	0	Celiakia	celiakia	0.45
+79	0	Peniaze	peniaze	0.2
+80	0	Palec (jednotka dĺžky)	palec	0.33
+80	1	Páleč	palec	0.18
+81	0	Nohy (album)	nohy	0.18
+82	0	.sk	sk	0.17
+85	0	Hurgada	hurghada	0.24
+85	0	Egypt	egypt	0.17
+86	0	Potravina	potraviny	0.21
+89	0	Rakovina (album)	rakovina	0.14
+90	0	Muž	muz	0.2
+90	0	Žena	zena	0.19
+91	0	Pohotovosť (seriál)	pohotovost	0.47
+92	0	Škoda Octavia	skoda octavia	0.27
+92	1	Škoda Octavia (1959)	skoda octavia	0.21
+93	0	Škoda Yeti	skoda yeti	0.24
+97	0	Diabetes mellitus	cukrovka	0.19
+98	0	Učiteľ	ucitel	0.15
+99	0	Hodiny (súhvezdie)	hodiny	0.21
+99	0	Svidník	svidnik	0.13
+99	1	Hodiny	hodiny	0.16
+99	1	Svidník	svidnik	0.13
+101	0	Majstrovstvá sveta v ľadovom hokeji 2014	2014	0.16
+101	1	2014	2014	0.12

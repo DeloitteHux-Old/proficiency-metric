@@ -1,0 +1,74 @@
+id1	0	/m/0tc7	arnold schwarzenegger	0.17
+id1	0	/m/0fd4x	total recall	0.14
+id1	1	/m/0tc7	arnold schwarzenegger	0.17
+id1	1	/m/0gvrws1	total recall	0.15
+id2	0	/m/0gvrws1	total recall	0.17
+id2	1	/m/0fd4x	total recall	0.17
+id3	0	/m/0gj5qr6	the governator	0.47
+id3	1	/m/0tc7	the governator	0.07
+TREC-1	0	/m/03rk0	india	1
+TREC-7	0	/m/04cnvy	bowflex	0.33
+TREC-8	0	/m/03d452	brooks brothers	0.18
+TREC-10	0	/m/01n7q	california	1
+TREC-11	0	/m/0nfgq	cass county missouri	0.2
+TREC-13	0	/m/02xry	florida	1
+TREC-14	0	/m/0c4tkd	culpeper national cemetery	0.2
+TREC-15	0	/m/057lcq	asbestos	0.13
+TREC-15	0	/m/03nqt5b	dangers	0.15
+TREC-17	0	/m/0kc8y	discovery channel store	0.2
+TREC-20	0	/m/0dc3_	dutchess county	0.17
+TREC-22	0	/m/027311j	east ridge high school	0.1
+TREC-22	1	/m/0bs8gsb	east ridge high school	0.1
+TREC-23	0	/m/0f6msb	skeet shoot	0.24
+TREC-25	0	/m/0180mw	er tv show	0.17
+TREC-26	0	/m/0fql_	uranus	0.07
+TREC-28	0	/m/02761b3	french lick resort	0.3
+TREC-34	0	/m/03v0t	illinois	1
+TREC-36	0	/m/03v1s	indiana	1
+TREC-37	0	/m/04shkp	indiana state fairgrounds	0.2
+TREC-40	0	/m/03s0w	iowa	1
+TREC-42	0	/m/04f_d	kansas city mo	0.15
+TREC-43	0	/m/010rgv	kenmore	0.06
+TREC-45	0	/m/03rk0	india	1
+TREC-48	0	/m/02dp7g	madam cj walker	0.24
+TREC-49	0	/m/015fr	brazil	1
+TREC-51	0	/m/01b370	martha stewart	0.22
+TREC-51	0	/m/0j6rg	imclone	0.21
+TREC-51	1	/m/07kczv0	martha stewart	0.12
+TREC-51	1	/m/0j6rg	imclone	0.21
+TREC-52	0	/m/0158xh	mayo clinic	0.19
+TREC-52	0	/m/0ggh3	jacksonville fl	0.15
+TREC-53	0	/m/04p2zc	milwaukee journal sentinel	0.26
+TREC-54	0	/m/0cjjt	mothers day	0.1
+TREC-56	0	/m/0gyytc	orange county convention center	0.22
+TREC-57	0	/m/0k1jw	pacific northwest laboratory	0.18
+TREC-61	0	/m/04r3s1	ralph owen brewster	0.27
+TREC-62	0	/m/02_zt7	rincon puerto rico	0.16
+TREC-63	0	/m/0288kpv	ritz carlton	0.23
+TREC-64	0	/m/01pvr35	gem	0.05
+TREC-65	0	/m/064m90	rocky mountain news	0.22
+TREC-69	0	/m/03c3c7h	sonoma county	0.16
+TREC-69	1	/m/0l35f	sonoma county	0.1
+TREC-70	0	/m/05b5w	source of the nile	0.2
+TREC-72	0	/m/0c9jmt	border patrol	0.11
+TREC-72	0	/m/07b_l	texas	1
+TREC-73	0	/m/057xsbz	the beatles rock band	0.15
+TREC-74	0	/m/0cqnss	the music man	0.15
+TREC-74	1	/m/0gwypk	the music man	0.15
+TREC-74	2	/m/0p4s9	the music man	0.1
+TREC-75	0	/m/049cgk	the secret garden	0.15
+TREC-75	1	/m/0dj9x08	the secret garden	0.15
+TREC-75	2	/m/0251j3	the secret garden	0.15
+TREC-75	3	/m/0pcpkmn	the secret garden	0.09
+TREC-76	0	/m/07h34	tn	1
+TREC-79	0	/m/05t3df	tv	0.17
+TREC-80	0	/m/016tw3	universal	0.14
+TREC-80	1	/m/034130	universal	0.1
+TREC-81	0	/m/02gnrt	university of phoenix	0.18
+TREC-82	0	/m/08874	yellowstone national park	0.16
+TREC-83	0	/m/07vth	us capitol	0.16
+TREC-85	0	/m/0gkgp	charleston sc	0.16
+TREC-85	0	/m/01fmw0	uss yorktown	0.06
+TREC-86	0	/m/07z1m	va	1
+TREC-87	0	/m/0217wz	vines	0.15
+TREC-90	0	/m/02y10n	calculator	0.05

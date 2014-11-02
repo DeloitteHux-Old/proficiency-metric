@@ -1070,47 +1070,35 @@ if __name__ == '__main__':
                 print MuLabCat.erd(args.actual,args.predicted)
             else:
                 print MuLabCat.score(args.actual,args.predicted,abeg=args.abeg,pbeg=args.pbeg)
-        else:
-            # svn co https://svn.ui.sav.sk/svn/magnetic/QueryEvaluation/data/
-            # categories.txt - taxonomy
-            # queries annotated by 3 different people: labeler[123].txt
-            qedir = os.path.expandvars("$HOME/src/magnetic/QueryEvaluation/data")
-            if os.path.isdir(qedir):
-                l1 = os.path.join(qedir,"labeler1.txt")
-                l2 = os.path.join(qedir,"labeler2.txt")
-                l3 = os.path.join(qedir,"labeler3.txt")
-                MuLabCat.random_stats(l1)
-                MuLabCat.random_stats(l2)
-                MuLabCat.random_stats(l3)
-                print MuLabCat.score(l1,l2)
-                print MuLabCat.score(l2,l3)
-                print MuLabCat.score(l3,l1)
-            else:
-                MuLabCat.logger.info("[%s] does not exist",qedir)
-            # hand-annotated 10k queries
-            qedir = os.path.expandvars("$HOME/Magnetic/kwd-cat")
-            if os.path.isdir(qedir):
-                ann = os.path.join(qedir,"queries_august_annotated_levels_separated.txt")
-                res = os.path.join(qedir,"queries_august_results_levels_separated.txt")
-                res5 = os.path.join(qedir,"queries_august_results_upto5_levels_separated.txt")
-                MuLabCat.random_stats(ann,abeg=2)
-                MuLabCat.random_stats(res)
-                MuLabCat.random_stats(res5)
-                print MuLabCat.score(ann,res,abeg=2)
-                print MuLabCat.score(ann,res5,abeg=2)
-            else:
-                MuLabCat.logger.info("[%s] does not exist",qedir)
-            qedir = os.path.expandvars("$HOME/src/magnetic/research/erd")
-            if os.path.isdir(qedir):
-                trecA = os.path.join(qedir,"Trec_beta_annotations.txt")
-                trecR = os.path.join(qedir,"Trec_beta_results.txt")
-                print MuLabCat.erd(trecA,trecR)
-                qskA = os.path.join(qedir,"queries_sk_annotation.txt")
-                qskR = os.path.join(qedir,"queries_sk_results.txt")
-                qskRA = os.path.join(qedir,"queries_sk_results_ascii.txt")
-                print MuLabCat.erd(qskA,qskR)
-                print MuLabCat.erd(qskA,qskRA)
-            else:
-                MuLabCat.logger.info("[%s] does not exist",qedir)
+        else:                   # pre-supplied data
+            data_dir = "../data"
+            # Queries annotated by 3 different people for KDD Cup 2005
+            l1 = os.path.join(data_dir,"labeler1.txt")
+            l2 = os.path.join(data_dir,"labeler2.txt")
+            l3 = os.path.join(data_dir,"labeler3.txt")
+            MuLabCat.random_stats(l1)
+            MuLabCat.random_stats(l2)
+            MuLabCat.random_stats(l3)
+            print MuLabCat.score(l1,l2)
+            print MuLabCat.score(l2,l3)
+            print MuLabCat.score(l3,l1)
+            # Hand-annotated 10k queries (Magnetic)
+            ann = os.path.join(data_dir,"magnetic_annotated.txt")
+            res = os.path.join(data_dir,"magnetic_results.txt")
+            res5 = os.path.join(data_dir,"magnetic_results_upto5.txt")
+            MuLabCat.random_stats(ann,abeg=2)
+            MuLabCat.random_stats(res)
+            MuLabCat.random_stats(res5)
+            print MuLabCat.score(ann,res,abeg=2)
+            print MuLabCat.score(ann,res5,abeg=2)
+            # Slovak queries in ERD format
+            trecA = os.path.join(data_dir,"Trec_beta_annotations.txt")
+            trecR = os.path.join(data_dir,"Trec_beta_results.txt")
+            print MuLabCat.erd(trecA,trecR)
+            qskA = os.path.join(data_dir,"sk_annotation.txt")
+            qskR = os.path.join(data_dir,"sk_results.txt")
+            qskRA = os.path.join(data_dir,"sk_results_ascii.txt")
+            print MuLabCat.erd(qskA,qskR)
+            print MuLabCat.erd(qskA,qskRA)
     else:
         test()
