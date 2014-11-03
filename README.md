@@ -22,8 +22,8 @@ The test data for the results in the paper:
 
 * `labeler[123].txt`: KDD Cup 2005
 
-* `Trec_beta`: ???
+* `Trec_beta`: Example test data for ERD 2014 - http://web-ngram.research.microsoft.com/erd2014/Datasets.aspx
 
-* `sk`: ???
+* `sk`: 100 Magnetic queries annotated with Wikipedia concepts in similar format as ERD 2014 (Trec\_beta)
 
 * `magnetic`: hand-annotated examples from searches in the Magnetic.com database of search events
