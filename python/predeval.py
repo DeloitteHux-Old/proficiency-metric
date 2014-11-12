@@ -456,7 +456,7 @@ class ConfusionMX (object):
         return cmx
 
     @staticmethod
-    def score_vw_oaa (predictions, base=None, NumRP=500):
+    def score_vw_oaa (predictions, base=None, NumRP=0):
         """Score $(vw -t) output from a $(vw --oaa) model.
         IDs should be the true values, unless base is supplied."""
         cmx = ConfusionMX(os.path.basename(predictions),NumRP=NumRP)
@@ -490,7 +490,7 @@ class ConfusionMX (object):
 class MuLabCat (object):        # MultiLabelCategorization
     logger = util.get_logger("MuLabCat")
 
-    def __init__ (self, title, reassign = True, NumRP = 0):
+    def __init__ (self, title, reassign = True, NumRP=0):
         self.title = title
         self.match = dict()
         self.actual = dict()
@@ -652,7 +652,7 @@ class MuLabCat (object):        # MultiLabelCategorization
                     RandomPair.stat2string(self.halves)))
 
     @staticmethod
-    def erd (actual, predicted, delimiter='\t', idcol=0, catcol=2, NumRP=500):
+    def erd (actual, predicted, delimiter='\t', idcol=0, catcol=2, NumRP=0):
         """Score one file against another.
         File format: ...<id>...<category>...
         """
@@ -668,7 +668,7 @@ class MuLabCat (object):        # MultiLabelCategorization
         return mlc
 
     @staticmethod
-    def score (actual, predicted, delimiter='\t', abeg=1, pbeg=1, NumRP=500):
+    def score (actual, predicted, delimiter='\t', abeg=1, pbeg=1, NumRP=0):
         """Score one file against another.
         File format: <query string>[<delimiter><category>]+
         The queries in both files must be identical.
@@ -1034,10 +1034,13 @@ if __name__ == '__main__':
                     help='the column in actual where the categories start [MuLabCat]')
     ap.add_argument('-pbeg',type=int,default=1,
                     help='the column in predicted where the categories start [MuLabCat]')
+    ap.add_argument('-NumRP',type=int,default=0,
+                    help='the Number of RandomPairs for testing numeric stability')
     args = ap.parse_args()
     if args.ConfusionMX:
         if args.predictions is not None:
-            print ConfusionMX.score_vw_oaa(args.predictions, args.base)
+            print ConfusionMX.score_vw_oaa(args.predictions, base=args.base,
+                                           NumRP=args.NumRP)
         else:
             # Parse output from $(make -C vw/demo/mnist raw png)
             vwdemo = os.path.expandvars("$HOME/src/sds-vw/demo")
@@ -1059,7 +1062,9 @@ if __name__ == '__main__':
                                     print cm
                         if f.endswith('.predictions'):
                             try:
-                                print ConfusionMX.score_vw_oaa(os.path.join(dirpath,f),args.base)
+                                print ConfusionMX.score_vw_oaa(
+                                    os.path.join(dirpath,f),base=args.base,
+                                    NumRP=args.NumRP)
                             except Exception as ex:
                                 print ex
             else:
@@ -1067,9 +1072,12 @@ if __name__ == '__main__':
     elif args.MuLabCat:
         if args.actual is not None and args.predicted is not None:
             if args.format == 'erd':
-                print MuLabCat.erd(args.actual,args.predicted)
+                print MuLabCat.erd(args.actual,args.predicted,
+                                   NumRP=args.NumRP)
             else:
-                print MuLabCat.score(args.actual,args.predicted,abeg=args.abeg,pbeg=args.pbeg)
+                print MuLabCat.score(args.actual,args.predicted,
+                                     abeg=args.abeg,pbeg=args.pbeg,
+                                     NumRP=args.NumRP)
         else:                   # pre-supplied data
             data_dir = "../data"
             # Queries annotated by 3 different people for KDD Cup 2005
@@ -1079,9 +1087,9 @@ if __name__ == '__main__':
             MuLabCat.random_stats(l1)
             MuLabCat.random_stats(l2)
             MuLabCat.random_stats(l3)
-            print MuLabCat.score(l1,l2)
-            print MuLabCat.score(l2,l3)
-            print MuLabCat.score(l3,l1)
+            print MuLabCat.score(l1,l2,NumRP=args.NumRP)
+            print MuLabCat.score(l2,l3,NumRP=args.NumRP)
+            print MuLabCat.score(l3,l1,NumRP=args.NumRP)
             # Hand-annotated 10k queries (Magnetic)
             ann = os.path.join(data_dir,"magnetic_annotated.txt")
             res = os.path.join(data_dir,"magnetic_results.txt")
@@ -1089,16 +1097,16 @@ if __name__ == '__main__':
             MuLabCat.random_stats(ann,abeg=2)
             MuLabCat.random_stats(res)
             MuLabCat.random_stats(res5)
-            print MuLabCat.score(ann,res,abeg=2)
-            print MuLabCat.score(ann,res5,abeg=2)
+            print MuLabCat.score(ann,res,abeg=2,NumRP=args.NumRP)
+            print MuLabCat.score(ann,res5,abeg=2,NumRP=args.NumRP)
             # Slovak queries in ERD format
             trecA = os.path.join(data_dir,"Trec_beta_annotations.txt")
             trecR = os.path.join(data_dir,"Trec_beta_results.txt")
-            print MuLabCat.erd(trecA,trecR)
+            print MuLabCat.erd(trecA,trecR,NumRP=args.NumRP)
             qskA = os.path.join(data_dir,"sk_annotation.txt")
             qskR = os.path.join(data_dir,"sk_results.txt")
             qskRA = os.path.join(data_dir,"sk_results_ascii.txt")
-            print MuLabCat.erd(qskA,qskR)
-            print MuLabCat.erd(qskA,qskRA)
+            print MuLabCat.erd(qskA,qskR,NumRP=args.NumRP)
+            print MuLabCat.erd(qskA,qskRA,NumRP=args.NumRP)
     else:
         test()

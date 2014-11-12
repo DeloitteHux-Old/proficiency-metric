@@ -203,7 +203,7 @@ class NumStat (RunStat):
     def stdDev (self):
         if self.count == 0:
             return float("NaN")
-        if abs(self.minV - self.maxV) < sys.float_info.epsilon * self.count:
+        if (self.maxV - self.minV) < sys.float_info.epsilon * self.sum2:
             return 0 # guard against roundoff errors producing sqrt(-eps)
         return math.sqrt(self.sum2 / self.count -
                          (self.sumV * self.sumV) / (self.count * self.count))
@@ -221,11 +221,14 @@ class NumStat (RunStat):
             ("" if self.nanCount==0 else " NaN={:,d}".format(self.nanCount)),
             ("" if self.bad is None else " Bad={:,d}".format(self.bad.num())))
 
-    def out (self, toString = str):
+    def out (self, pc = util.PrintCounter(), toString = str):
         print "=== "+self.__str__(toString)
         if self.bad is None:
-            return False # full output, not truncation
-        return self.bad.out(util.PrintCounter())
+            return False # full output, no truncation
+        return self.bad.out(pc)
+
+    def dump (self, pc, toString = str):
+        self.out(pc,toString)
 
     @staticmethod
     def test ():
