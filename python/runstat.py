@@ -34,7 +34,7 @@ class RunStat (object):
         if self.title != rs.title:
             raise ValueError("RunStat.merge title mismatch:",self.title,rs.title)
 
-    def out (self, method = None):
+    def out (self):
         raise NotImplementedError("RunStat.add")
 
 class Counter (RunStat):
@@ -67,10 +67,21 @@ class Counter (RunStat):
         for o,n in c.counts.iteritems():
             self.add(o, n)
 
+    def split (self):
+        "Split a counter of pairs into a pair of counters"
+        (t1, t2) = self.title
+        r1 = Counter(t1)
+        r2 = Counter(t2)
+        for (o1,o2),n in self.counts.iteritems():
+            r1.add(o1, n)
+            r2.add(o2, n)
+        return (r1,r2)
+
     def __str__ (self):
-        return "{:s} ({:s})".format(self.title,util.dict__str__(
+        return "%s (%s)" % (self.title,util.dict__str__(
             self.counts,util.title2missing(self.title)))
 
+    # pylint: disable=arguments-differ
     def out (self, pc = util.PrintCounter()):
         if pc is None:
             pc = util.PrintCounter()
@@ -84,7 +95,8 @@ class Counter (RunStat):
             self.csv(csv, logger=logger, smallest=csvsmallest)
 
     def short (self):
-        return "{:s}:{:,d}/{:,d}".format(self.title,self.num(),len(self.counts))
+        return "{t:s}:{n:,d}/{c:,d}".format(
+            t=self.title,n=self.num(),c=len(self.counts))
 
     @staticmethod
     def test ():
@@ -125,6 +137,10 @@ class Counter (RunStat):
         c.add(('a1','b2'))
         c.out()
         c.csv(sys.stdout)
+        p1,p2 = c.split()
+        p1.out(pc)
+        p2.out(pc)
+
 
 class NumStat (RunStat):
     def __init__ (self, title, values = None, values_weights = None, integer = False):
@@ -137,7 +153,7 @@ class NumStat (RunStat):
         self.sumV = 0
         self.sum2 = 0
         self.nanCount = 0
-        self.integer = integer  # if true, min/max is printed with {:,d}
+        self.integer = integer  # if true, min/max is printed with {0:,d}
         self.bad = None
         if values is not None:
             for v in values:
@@ -149,7 +165,7 @@ class NumStat (RunStat):
     def add (self, v,  n = 1):
         try:
             v = float(v)
-        except ValueError:
+        except (TypeError, ValueError):
             if self.bad is None:
                 self.bad = Counter("{}(bad)".format(self.title))
             self.bad.add(v,n)
@@ -212,17 +228,21 @@ class NumStat (RunStat):
     def __str__ (self, toString = str):
         if toString is None:
             toString = str
-        return "{:s} [{:,d} {:s}${:s} {:s}{:s}:{:s}{:s}{:s}{:s}]".format(
-            self.title,self.count,toString(self.mean()),toString(self.stdDev()),
-            ("{:,d}".format(int(self.minV)) if self.integer else toString(self.minV)),
-            ("" if self.minN == 1 else "*{:,d}".format(self.minN)),
-            ("{:,d}".format(int(self.maxV)) if self.integer else toString(self.maxV)),
-            ("" if self.maxN == 1 else "*{:,d}".format(self.maxN)),
-            ("" if self.nanCount==0 else " NaN={:,d}".format(self.nanCount)),
-            ("" if self.bad is None else " Bad={:,d}".format(self.bad.num())))
+        return "{t:s} [{c:,d} {m:s}${d:s} {i:s}{I:s}:{a:s}{A:s}{n:s}{b:s}]".format(
+            t=self.title,c=self.count,m=toString(self.mean()),
+            d=toString(self.stdDev()),
+            i=("{i:,d}".format(i=int(self.minV)) if self.integer else
+               toString(self.minV)),
+            I=("" if self.minN == 1 else "*{i:,d}".format(i=self.minN)),
+            a=("{i:,d}".format(i=int(self.maxV)) if self.integer else
+               toString(self.maxV)),
+            A=("" if self.maxN == 1 else "*{i:,d}".format(i=self.maxN)),
+            n=("" if self.nanCount==0 else " NaN={i:,d}".format(i=self.nanCount)),
+            b=("" if self.bad is None else " Bad={i:,d}".format(i=self.bad.num())))
 
+    # pylint: disable=arguments-differ
     def out (self, pc = util.PrintCounter(), toString = str):
-        print "=== "+self.__str__(toString)
+        print pc.header+" "+self.__str__(toString)
         if self.bad is None:
             return False # full output, no truncation
         return self.bad.out(pc)
@@ -236,7 +256,7 @@ class NumStat (RunStat):
         for x in [1,2,1,3,0,0,0,0,float("NaN")]:
             c.add(x)
         c.out()
-        print "c.num={:,d}".format(c.num())
+        print "c.num={n:,d}".format(n=c.num())
         d = NumStat("foo",values=[5,6,8,3,4,5,2,4,5,6,7,4,4,5])
         d.out()
         c.merge(d)
@@ -245,7 +265,7 @@ class NumStat (RunStat):
             c.add(x)
         import progress
         c.out(progress.difftime2string)
-        print "c.num={:,d}".format(c.num())
+        print "c.num={n:,d}".format(n=c.num())
 
 def test():
     Counter.test()

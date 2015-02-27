@@ -251,7 +251,7 @@ class RandomPair (object):
             return ""
         sp = RandomPair.stat(pairs)
         w = max([len(m) for m in sp.iterkeys()])
-        return "\n"+"\n".join([" * %*s %s" % (w,m,rs.__str__("{:.2%}".format))
+        return "\n"+"\n".join([" * %*s %s" % (w,m,rs.__str__("{0:.2%}".format))
                                for (m,rs) in sp.iteritems()])
 
 class ConfusionMX (object):
@@ -409,19 +409,19 @@ class ConfusionMX (object):
         if bm is None:
             bm = ""
         else:
-            bm = "\n  Pre={:.2%} Spe={:.2%} Rec={:.2%} Npv={:.2%} Lift={:.2f}".format(
-                bm['precision'],bm['specificity'],bm['recall'],bm['npv'],bm['lift'])
+            bm = "\n  Pre={p:.2%} Spe={s:.2%} Rec={r:.2%} Npv={n:.2%} Lift={l:.2f}".format(p=bm['precision'],s=bm['specificity'],r=bm['recall'],n=bm['npv'],l=bm['lift'])
         if self.is_binary():
             mcc = self.mcc()
             freq = sum(self.afreq.itervalues()) + sum(self.pfreq.itervalues())
             assert abs(abs(mcc) - self.phi()) < sys.float_info.epsilon * freq
-            correlation = "MCC={:.2%}".format(mcc)
+            correlation = "MCC={m:.2%}".format(m=mcc)
         else:
-            correlation = "Phi={:.2f}".format(self.phi())
+            correlation = "Phi={p:.2f}".format(p=self.phi())
         total,actual,predicted = self.marginals()
-        return ("ConfusionMX({}/{:,d}/{:,d}/{:,d}*{:,d}): Pro={:.2%} Acc={:.2%}({:.2%}) ".format(
-            self.title,len(self.mx),total,len(actual),len(predicted),
-            self.proficiency(),self.accuracy(),ConfusionMX.random_accuracy(actual))
+        return ("ConfusionMX({n:s}/{l:,d}/{t:,d}/{a:,d}*{p:,d}): Pro={P:.2%} Acc={A:.2%}({R:.2%}) ".format(
+            n=self.title,l=len(self.mx),t=total,a=len(actual),p=len(predicted),
+            P=self.proficiency(),A=self.accuracy(),
+            R=ConfusionMX.random_accuracy(actual))
                 + correlation + bm + RandomPair.stat2string(self.halves))
 
     @staticmethod
@@ -639,17 +639,19 @@ class MuLabCat (object):        # MultiLabelCategorization
         pm = len(taxonomy.difference(self.predicted.iterkeys()))
         for _ in range(pm):
             pec.add(0)
-        toSt = "{:.2f}".format
-        return ("MuLabCat({:}:m={:,d}/{:,d};a={:,d}/{:,d};p={:,d}/{:,d}):"
-                " Pre={:.2%} Rec={:.2%} (F1={:.2%}) Pro={:.2%}{:s}"
-                "\n    {:} {:}\n {:} {:}{:}".format(
-                    self.title,len(self.match),m,len(self.actual),a,
-                    len(self.predicted),p,safe_div(m,p),safe_div(m,a),
-                    safe_div(2*m,a+p),self.proficiency_raw(),
-                    "/{:.2%}".format(self.proficiency_assigned()) if self.reassign else "",
-                    self.ace.__str__(toSt),aec.__str__(toSt),
-                    self.pce.__str__(toSt),pec.__str__(toSt),
-                    RandomPair.stat2string(self.halves)))
+        toSt = "{0:.2f}".format
+        return ("MuLabCat({n:s}:m={m:,d}/{M:,d};a={a:,d}/{A:,d};p={p:,d}/{P:,d}):"
+                " Pre={pre:.2%} Rec={rec:.2%} (F1={f1:.2%}) Pro={pro:.2%}{pra:s}"
+                "\n    {ace:s} {aec:s}\n {pce:s} {pec:s}{rp:s}".format(
+                    n=self.title,m=len(self.match),M=m,a=len(self.actual),A=a,
+                    p=len(self.predicted),P=p,
+                    pre=safe_div(m,p),rec=safe_div(m,a),
+                    f1=safe_div(2*m,a+p),pro=self.proficiency_raw(),
+                    pra=("/{pa:.2%}".format(pa=self.proficiency_assigned())
+                         if self.reassign else ""),
+                    ace=self.ace.__str__(toSt),aec=aec.__str__(toSt),
+                    pce=self.pce.__str__(toSt),pec=pec.__str__(toSt),
+                    rp=RandomPair.stat2string(self.halves)))
 
     @staticmethod
     def erd (actual, predicted, delimiter='\t', idcol=0, catcol=2, NumRP=0):
@@ -700,8 +702,7 @@ class MuLabCat (object):        # MultiLabelCategorization
                 sa = frozenset(sa[abeg:])-empty
                 data.append(sa)
                 nca.add(len(sa))
-        MuLabCat.logger.info("random_stats({:,d}): Read {:,d} lines: {:}".format(
-            repeat,len(data),nca.__str__("{:.2f}".format)))
+        MuLabCat.logger.info("random_stats({r:,d}): Read {l:,d} lines: {o:s}".format(r=repeat,l=len(data),o=nca.__str__("{0:.2f}".format)))
         prre = runstat.NumStat("prec/recall")
         prof = runstat.NumStat("proficiency")
         for _ in range(repeat):
@@ -716,8 +717,8 @@ class MuLabCat (object):        # MultiLabelCategorization
             prre.add(p)
             prof.add(mlc.proficiency_raw())
         MuLabCat.logger.info("%d runs:\n %s\n %s",repeat,
-                             prof.__str__("{:.2%}".format),
-                             prre.__str__("{:.2%}".format))
+                             prof.__str__("{0:.2%}".format),
+                             prre.__str__("{0:.2%}".format))
 
     @staticmethod
     def category_set (taxonomy_size, max_cat = 4):
@@ -845,7 +846,7 @@ class LqObExact (LqObservations):
         mxl = []
         total = self.len()
         for threshold in thresholds:
-            mx = ConfusionMX("{} at {:.2%}".format(title,threshold))
+            mx = ConfusionMX("{h:s} at {d:.2%}".format(h=title,d=threshold))
             mxl.append(mx)
             count = 0
             for isTarget, _score, weight in self.observations:
@@ -940,7 +941,7 @@ class LqObBinned (LqObservations):
         lq = (2*cph - 1) / (1 - brw)
         mxl = []
         for threshold in thresholds:
-            mx = ConfusionMX("{:} at {:.2%}".format(title,float(cumco[threshold])/sco))
+            mx = ConfusionMX("{h:s} at {d:.2%}".format(h=title,d=float(cumco[threshold])/sco))
             mxl.append(mx)
             for i in range(len(self.bins)):
                 _tc, _co, tw, ws = self.bins[i]
@@ -983,8 +984,8 @@ class LiftQuality (object):
 
     def __str__ (self):
         lq, _brc, brw, mxl = self.lq()
-        main = "LiftQuality({}/{:,d} {:.2%}): Lq={:.2%}".format(
-            self.title,self.len(),brw,lq)
+        main = "LiftQuality({h:s}/{l:,d} {b:.2%}): Lq={q:.2%}".format(
+            h=self.title,l=self.len(),b=brw,q=lq)
         if mxl == []:
             return main
         return main + "\n " + "\n ".join(str(mx) for mx in mxl)

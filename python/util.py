@@ -85,6 +85,31 @@ def accumu (seq):
 
 def cumsum (seq): return list(accumu(seq))
 
+# similar to the system function, but
+# - does not support negative step
+# - does support dates and such, as long as they support "+" and "<"
+# - stop is included in the range
+def myrange (start, stop, step):
+    ret = list()
+    while start <= stop:
+        ret.append(start)
+        start += step
+    return ret
+
+import ast
+import pprint
+class HumanReadable (object):
+    # http://stackoverflow.com/questions/28055565/how-to-serialize-a-python-dict-to-text-in-a-human-readable-way
+    @staticmethod
+    def save (x, fname):
+        with open(fname, 'w') as f:
+            pprint.PrettyPrinter(stream=f).pprint(x)
+
+    @staticmethod
+    def load (fname):
+        with open(fname, 'r') as f:
+            return ast.literal_eval(f.read())
+
 # execfile('util.py'); test()
 def test ():
     counter = collections.Counter(['a','b','a','c','a','b'])
@@ -93,6 +118,11 @@ def test ():
     PrintCounter.csv(counter,'test3',sys.stdout)
     PrintCounter.csv(counter,'test4',"foo-")
     os.remove("foo-test4.csv")
+    counter[u'a\u0437'] = 3
+    counter[7] = 5
+    print counter
+    PrintCounter.csv(counter,'test5',"foo-")
+    os.remove("foo-test5.csv")
     print asBigNumberBin(123456789)
     print asBigNumberDec(123456789)
     print "bin_entropy"
@@ -102,6 +132,15 @@ def test ():
     print bin_mutual_info(200,100,100,50)
     for x in range(10):
         print bin_mutual_info(200,20,20+0.8*x,(200-x)*0.1)
+    x1 = dict([(a,2*a) for a in range(10)])
+    x1[(1,2,3)] = 6
+    x1 = [x1] + [(x1,x1)]
+    HumanReadable.save(x1, "tmp")
+    x2 = HumanReadable.load("tmp")
+    os.remove("tmp")
+    if x1 != x2:
+        raise Exception("HumanReadable",x1,x2)
+    print x1
 
 def default_None (x, d): return d if x is None else x
 
@@ -129,18 +168,18 @@ def asBigNumberDec (v):         # valid toString argument
 
 def nicenum (s):                # nice number presentation
     try:
-        return "{:,d}".format(int(s))
+        return "{n:,d}".format(n=int(s))
     except ValueError:
         return s
 
 # not needed in python3
-def ensure_dir (path):
+def ensure_dir (path, logger = None):
     try:
         os.makedirs(path)
-        print "Created [{:s}]".format(path)
+        info("Created [%s]" % (path),logger)
     except OSError:
         if os.path.isdir(path):
-            print "Path [{:s}] already exists".format(path)
+            info("Path [%s] already exists" % (path),logger)
         else:
             raise
 
@@ -160,7 +199,7 @@ def commonsuffix(l):
 def title_from_2paths (first, second):
     cp = os.path.commonprefix([first,second])
     cs = commonsuffix([first,second])
-    return "{:}({:}|{:}){:}".format(
+    return "%s(%s|%s)%s" % (
         cp,first[len(cp):len(first)-len(cs)],
         second[len(cp):len(second)-len(cs)],cs)
 
@@ -177,7 +216,7 @@ def canonicalize_domain (domain):
         # logger.info("weird domain [[%s]]",domain)
         return domain
     while domain.count('.') > mindot:
-        domain1 = re.sub(r'^(pub|web|ww)?[0-9]*\.','',domain)
+        domain1 = re.sub(r'^(pub|web|www*)?-?[0-9]*\.','',domain)
         if domain1 == domain:
             return domain
         else:
@@ -251,9 +290,10 @@ def dict_entropy (counts, missing = None, scaledto1 = False):
 def dict__str__ (counts, missing = None):
     "Return a short string describing the counter dictionary."
     entropy_total,entropy_present = dict_entropy(counts,missing)
-    return "len={:,d}; sum={:,d}; entropy={:g}{:s}".format(
-        len(counts),sum(counts.itervalues()),entropy_total,
-        ("" if entropy_present is None else "/{:g}".format(entropy_present)))
+    return "len={l:,d}; sum={s:,d}; entropy={e:g}{p:s}".format(
+        l=len(counts),s=sum(counts.itervalues()),e=entropy_total,
+        p=("" if entropy_present is None else
+           "/{p:g}".format(p=entropy_present)))
 
 def title2missing (title):
     return tuple([None] * len(title)) if isinstance(title,tuple) else None
@@ -314,19 +354,27 @@ class PrintCounter (object):
         total = sum(counter.itervalues())
         num_rows = len(counter)
         if total == num_rows:
-            print "{:s} {:s} {:,d} items: {:}".format(self.header,title,num_rows,counter.keys())
+            print "{h:s} {t:s} {n:,d} items: {i:s}".format(
+                h=self.header,t=title,n=num_rows,i=counter.keys())
             return False
         small5 = dict_drop_rare(counter,5)
         if len(small5) == len(counter) or len(small5) < 2:
-            print "{:s} {:s} ({:s})".format(self.header,title,dict__str__(counter,missing))
+            print "{h:s} {t:s} ({a:s})".format(
+                h=self.header,t=title,a=dict__str__(counter,missing))
         else:
-            print "{:s} {:s} ({:s})/({:s})".format(
-                self.header,title,dict__str__(counter,missing),
-                dict__str__(small5,missing))
+            print "{h:s} {t:s} ({a:s})/({s:s})".format(
+                h=self.header,t=title,a=dict__str__(counter,missing),
+                s=dict__str__(small5,missing))
         row = 0
         left = 1
         if not self.prefix is None:
             print self.prefix
+        def as_ascii (o):
+            if isinstance(o,str):
+                return o
+            if isinstance(o,unicode):
+                return o.encode('utf-8')
+            return str(o)
         for obj, count in counter2pairs(counter):
             percent = float(count) / total
             row += 1
@@ -334,21 +382,20 @@ class PrintCounter (object):
             if ((count < self.min_count or row > self.max_row
                  or 100 * percent < self.min_percent)
                 and omit > self.min_omit and row > self.min_row):
-                print " - omitted {:,d} rows ({:.2%})".format(omit, left)
+                print " - omitted {o:,d} rows ({l:.2%})".format(o=omit,l=left)
                 if not self.suffix is None:
                     print self.suffix
                 return True     # truncated
             left -= percent
+            xp = ("" if self.total is None or obj not in self.total else
+                  " ({p:.2%})".format(p=float(count)/self.total[obj]))
             if isinstance(obj,tuple):
-                print " {:5d} {:} {:10,d} {:6.2%}{:s}".format(
-                    row, " ".join(str(o).rjust(30) for o in obj), count, percent,
-                    "" if self.total is None or obj not in self.total else
-                    " ({:.2%})".format(float(count)/self.total[obj]))
+                print " {r:5d} {o:s} {c:12,d} {p:6.2%}{xp:s}".format(
+                    r=row, o=" ".join(as_ascii(o).rjust(30) for o in obj),
+                    c=count, p=percent, xp = xp)
             else:
-                print " {:5d} {:30} {:10,d} {:6.2%}{:s}".format(
-                    row, obj, count, percent,
-                    "" if self.total is None or obj not in self.total else
-                    " ({:.2%})".format(float(count)/self.total[obj]))
+                print " {r:5d} {o:30s} {c:12,d} {p:6.2%}{xp:s}".format(
+                    r=row, o=as_ascii(obj), c=count, p=percent, xp=xp)
         if not self.suffix is None:
             print self.suffix
         return False            # no truncation
@@ -360,20 +407,28 @@ class PrintCounter (object):
                 destination += "-".join(str(o) for o in title) + ".csv"
             else:
                 destination += title + ".csv"
-            info("Writing {:,d} rows to [{:s}]".format(len(counter),destination),logger)
+            info("Writing {r:,d} rows to [{d:s}]".format(
+                r=len(counter),d=destination),logger)
             with open(destination,"wb") as dest:
                 PrintCounter.csv(counter, title, dest, smallest=smallest)
-            info("Wrote {:,d} bytes".format(os.path.getsize(destination)),logger)
+            wrote(destination,logger=logger)
         else:
             writer = csv.writer(destination)
             if isinstance(title,tuple):
                 writer.writerow(list(title)+["count"])
                 for observation,count in counter2pairs(counter):
                     if count >= smallest:
-                        writer.writerow(list(observation)+[count])
+                        writer.writerow([unicode(x).encode('utf-8')
+                                         for x in observation]+[count])
             else:
                 writer.writerow([title,"count"])
-                writer.writerows(counter2pairs(counter))
+                # writer.writerows(counter2pairs(counter))
+                for observation,count in counter2pairs(counter):
+                    if count >= smallest:
+                        writer.writerow([unicode(observation).encode('utf-8'),count])
+            # chances are, write() above will write a better message than this
+            #if isinstance(destination,file) and os.path.isfile(destination.name):
+            #    wrote(destination.name,logger=logger)
 
 # http://stackoverflow.com/questions/390250/elegant-ways-to-support-equivalence-equality-in-python-classes
 class CommonMixin(object):
@@ -396,15 +451,15 @@ def wilson (success, total):
 def filesize2string (f):
     s = os.path.getsize(f)
     if s.bit_length() > 10:
-        return "{:,d} bytes ({:s}B)".format(s,asBigNumberBin(s))
+        return "{b:,d} bytes ({a:s}B)".format(b=s,a=asBigNumberBin(s))
     else:
-        return "{:,d} bytes".format(s)
+        return "{b:,d} bytes".format(b=s)
 
 def reading (f,logger = None):
-    info("Reading {:s} from [{:s}]".format(filesize2string(f),f),logger)
+    info("Reading {s:s} from [{f:s}]".format(s=filesize2string(f),f=f),logger)
 
 def wrote (f,logger = None):
-    info("Wrote {:s} into [{:s}]".format(filesize2string(f),f),logger)
+    info("Wrote {s:s} into [{f:s}]".format(s=filesize2string(f),f=f),logger)
 
 def enum (name, values):
     return type(name, (), dict(zip(values,values)))
@@ -426,7 +481,7 @@ def read_multimap (inf, delimiter, col1, col2, logger = None,
     lines = 0
     for row in csv.reader(inf,delimiter=delimiter,escapechar='\\'):
         if len(row) <= max(col1,col2):
-            warn("Bad line {:}, aborting".format(row),logger)
+            warn("Bad line %s, aborting" % (row),logger)
             break
         lines += 1
         key = row[col1].strip()
@@ -440,10 +495,10 @@ def read_multimap (inf, delimiter, col1, col2, logger = None,
         except KeyError:
             s = ret[key] = set()
         if val in s:
-            warn("Duplicate value [{:}] for key [{:}]".format(val,key),logger)
+            warn("Duplicate value [%s] for key [%s]" % (val,key),logger)
         s.add(val)
-    info("Read {:,d} lines with {:,d} keys and {:,d} values".format(
-        lines,len(ret),sum([len(s) for s in ret.itervalues()])),logger)
+    info("Read {l:,d} lines with {k:,d} keys and {v:,d} values".format(
+        l=lines,k=len(ret),v=sum([len(s) for s in ret.itervalues()])),logger)
     return ret
 
 if __name__ == '__main__':
