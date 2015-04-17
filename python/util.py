@@ -148,12 +148,18 @@ def empty2none (v): return (None if v == '' else v)
 
 def asPercent (v): return "%.2f" % (100.0 * v) # valid toString argument
 
+# http://stackoverflow.com/questions/29127801/cross-version-portability-in-python
+if hasattr(1, 'bit_length'):
+    def bitlen (x): return x.bit_length()
+else:
+    def bitlen (x): return len(bin(x))-2
+
 # http://en.wikipedia.org/wiki/Binary_prefix
 binaryPrefixes = ['K','M','G','T','P','E','Z','Y']
 
 asBigNumberBinCuts = [(10*(y+1),binaryPrefixes[y]) for y in range(len(binaryPrefixes))][::-1]
 def asBigNumberBin (v):         # valid toString argument
-    l = v.bit_length()
+    l = bitlen(v)
     for b,p in asBigNumberBinCuts:
         if l >= b:
             return "%.1f%si" % ((v >> (b-10)) / 1024.0, p)
@@ -182,6 +188,14 @@ def ensure_dir (path, logger = None):
             info("Path [%s] already exists" % (path),logger)
         else:
             raise
+
+# turn exceptions into None
+def catching_exceptions (logger,function,arguments):
+    try:
+        return function(*arguments) # pylint: disable=star-args
+    except Exception as e:
+        logger.error("%s: %s",function.__name__,e)
+        return None
 
 # http://nullege.com/codes/search/pyutil.strutil.commonsuffix
 def commonsuffix(l):
@@ -348,8 +362,9 @@ class PrintCounter (object):
         parser.add_argument('-pc-prefix', help='for PrintCounter')
         parser.add_argument('-pc-suffix', help='for PrintCounter')
 
-    def out (self, counter, title):
-        missing = title2missing(title)
+    def out (self, counter, title, missing = None):
+        if missing is None:
+            missing = title2missing(title)
         title = title2string(title)
         total = sum(counter.itervalues())
         num_rows = len(counter)
@@ -450,7 +465,7 @@ def wilson (success, total):
 
 def filesize2string (f):
     s = os.path.getsize(f)
-    if s.bit_length() > 10:
+    if bitlen(s) > 10:
         return "{b:,d} bytes ({a:s}B)".format(b=s,a=asBigNumberBin(s))
     else:
         return "{b:,d} bytes".format(b=s)
