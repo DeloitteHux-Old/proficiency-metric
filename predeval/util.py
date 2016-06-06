@@ -1,7 +1,7 @@
 # misc small utilities
 
 # Author:: Sam Steingold (<sds@magnetic.com>)
-# Copyright:: Copyright (c) 2014 Magnetic Media Online, Inc.
+# Copyright:: Copyright (c) 2014, 2015, 2016 Magnetic Media Online, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import operator
 import sys
 import collections
 import csv
@@ -25,11 +24,6 @@ import math
 import re
 import logging
 import random
-
-logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    handler=logging.StreamHandler(), # stderr
-                    level=logging.INFO)
 
 def weighted_sample(x, weights, n=1):
     "Returns a weighted sample of length n with replacement. Weight do not need to sum to 1."
@@ -50,10 +44,48 @@ def weighted_sample(x, weights, n=1):
                     break
     return sample
 
+def sample_file (inf, outf, rates, pos, logger=None, separator = "\t"):
+    """Sample lines in INF according to RATES at position POS and write OUTF."""
+    reading(inf,logger)
+    written = collections.defaultdict(int)
+    wasread = collections.defaultdict(int)
+    with open(inf) as i:
+        with open(outf,"w") as o:
+            for l in i:
+                v = l.strip().split(separator)[pos]
+                wasread[v] += 1
+                try:
+                    r = rates[v]
+                except KeyError:
+                    r = rates[v] = 1
+                    warn("Unexpected value [%s] in [%s], set rate=1" % (v,l.strip()), logger)
+                if r == 1 or random.random() <= r:
+                    o.write(l)
+                    written[v] += 1
+    wrote(outf,logger)
+    info("Read {i:,d} lines: {c:s}".format(
+        i=sum(wasread.itervalues()),c=counter2string(wasread)),logger)
+    info("Wrote {i:,d} lines: {c:s}".format(
+        i=sum(written.itervalues()),c=counter2string(written)),logger)
+
 def get_logger (name, level = logging.INFO):
+    console = logging.StreamHandler() # stderr
+    console.setFormatter(logging.Formatter(
+        fmt='%(asctime)s %(levelname)s %(name)s/%(module)s %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'))
+    # add the handler to the root logger
     logger = logging.getLogger(name)
+    logger.addHandler(console)
     logger.setLevel(level)
     return logger
+
+def debug (s,logger = None):
+    if logger is None:
+        print "DEBUG " + s
+    elif isinstance(logger,logging.Logger):
+        logger.debug(s)
+    else:
+        pass
 
 def info (s,logger = None):
     if logger is None:
@@ -70,6 +102,10 @@ def warn (s,logger = None):
         logger.warn(s)
     else:
         pass
+
+# http://stackoverflow.com/questions/497885/python-element-wise-tuple-operations-like-sum
+def tuple_sum (a, b):
+    return tuple(map(sum, zip(a, b)))
 
 # http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order
 def dedup (seq):
@@ -90,11 +126,9 @@ def cumsum (seq): return list(accumu(seq))
 # - does support dates and such, as long as they support "+" and "<"
 # - stop is included in the range
 def myrange (start, stop, step):
-    ret = list()
     while start <= stop:
-        ret.append(start)
+        yield start
         start += step
-    return ret
 
 import ast
 import pprint
@@ -146,8 +180,6 @@ def default_None (x, d): return d if x is None else x
 
 def empty2none (v): return (None if v == '' else v)
 
-def asPercent (v): return "%.2f" % (100.0 * v) # valid toString argument
-
 # http://stackoverflow.com/questions/29127801/cross-version-portability-in-python
 if hasattr(1, 'bit_length'):
     def bitlen (x): return x.bit_length()
@@ -180,19 +212,38 @@ def nicenum (s):                # nice number presentation
 
 # not needed in python3
 def ensure_dir (path, logger = None):
+    if path == "":              # current directory is presumed to exist
+        return
     try:
         os.makedirs(path)
         info("Created [%s]" % (path),logger)
     except OSError:
         if os.path.isdir(path):
-            info("Path [%s] already exists" % (path),logger)
+            debug("Path [%s] already exists" % (path),logger)
         else:
             raise
+
+class DirLock (object):
+    def __init__ (self, path):
+        ensure_dir(path)
+        self.dir = path
+        self.lock = os.path.join(path,"locked")
+
+    def __enter__ (self):
+        if os.path.exists(self.lock):
+            with open(self.lock) as l:
+                raise ValueError("directory is in use",self.dir,l.read())
+        with open(self.lock,"w") as l:
+            l.write("pid=%s logname=%s" % (os.getpid(),os.getenv("LOGNAME")))
+        return self.dir
+
+    def __exit__ (self, _exc_type, _exc_value, _traceback):
+        os.unlink(self.lock)
 
 # turn exceptions into None
 def catching_exceptions (logger,function,arguments):
     try:
-        return function(*arguments) # pylint: disable=star-args
+        return function(*arguments)
     except Exception as e:
         logger.error("%s: %s",function.__name__,e)
         return None
@@ -246,6 +297,11 @@ def url2host (url):
 
 def url2domain (url):
     return canonicalize_domain(url2host(url))
+
+def sigmoid (v):
+    return 1/(1+math.exp(-v))
+def antisigmoid(v):
+    return -math.log(1/v - 1)
 
 def bin_entropy (total, first):
     "Return the total entropy in nats."
@@ -316,13 +372,31 @@ def title2string(title, sep='-'):
     return sep.join(str(o) for o in title) if not isinstance(title,str) else title
 
 # http://stackoverflow.com/questions/613183/python-sort-a-dictionary-by-value
+# http://stackoverflow.com/questions/28839182/sorting-dictionary-by-value-and-lexicographical
 def counter2pairs (counter):
-    pairs = sorted(counter.iteritems(), key=operator.itemgetter(1))
-    pairs.reverse()
-    return pairs
+    # count: reverse, value: lexicographical
+    return sorted(counter.iteritems(), key=lambda (k,v): (-v,k))
 
 def dict_drop_rare (counter, min_count):
     return dict((k,v) for (k,v) in counter.iteritems() if v >= min_count)
+
+def counter_aggregate (dicts):
+    ret = dict()
+    for di in dicts:
+        for what,count in di.iteritems():
+            ret[what] = ret.get(what,0) + count
+    return ret
+
+def counter2string (counter, sep="; ", maxlen=None):
+    total = sum(counter.itervalues())
+    pairs = counter2pairs(counter)
+    if maxlen and maxlen < len(pairs):
+        suffix = "...%d omitted" % (len(pairs) - maxlen)
+        pairs = pairs[:maxlen]
+    else:
+        suffix = ""
+    return sep.join("[{k:s}: {v:,d} ({p:.2%})]".format(
+        k=str(k),v=v,p=float(v)/total) for (k,v) in pairs)+suffix
 
 class PrintCounter (object):
     min_count_default = 0        # omit if count less that this OR
@@ -349,7 +423,7 @@ class PrintCounter (object):
         self.header = default_None(kwargs.get('pc_header'), PrintCounter.header_default)
         self.prefix = default_None(kwargs.get('pc_prefix'), PrintCounter.prefix_default)
         self.suffix = default_None(kwargs.get('pc_suffix'), PrintCounter.suffix_default)
-        self.total = None       # set it outside for cross-percentages
+        self.total = dict()     # fill it outside for cross-percentages
 
     @staticmethod
     def add_arguments (parser):
@@ -402,7 +476,7 @@ class PrintCounter (object):
                     print self.suffix
                 return True     # truncated
             left -= percent
-            xp = ("" if self.total is None or obj not in self.total else
+            xp = ("" if obj not in self.total else
                   " ({p:.2%})".format(p=float(count)/self.total[obj]))
             if isinstance(obj,tuple):
                 print " {r:5d} {o:s} {c:12,d} {p:6.2%}{xp:s}".format(
@@ -463,12 +537,32 @@ def wilson (success, total):
     halfwidth = z * math.sqrt( p*(1-p) / total + z*z/(4*total*total) ) * scale
     return (center, halfwidth)
 
-def filesize2string (f):
-    s = os.path.getsize(f)
+# pass an empty collections.defaultdict(int) as types
+# and it will be filled with type counts
+# NB: this will double count objects which appear multiple times in containers
+def sizeof (obj, types = None):
+    ret = sys.getsizeof(obj)
+    if types is not None:
+        types[type(obj).__name__] += 1
+    if (isinstance(obj,list) or isinstance(obj,tuple) or
+        isinstance(obj,set) or isinstance(obj,frozenset)):
+        for x in obj:
+            ret += sizeof(x, types = types)
+        return ret
+    if isinstance(obj,dict):
+        for k,v in obj.iteritems():
+            ret += sizeof(k, types = types) + sizeof(v, types = types)
+        return ret
+    return ret
+
+def bytes2string (s):
     if bitlen(s) > 10:
         return "{b:,d} bytes ({a:s}B)".format(b=s,a=asBigNumberBin(s))
     else:
         return "{b:,d} bytes".format(b=s)
+
+def filesize2string (f):
+    return bytes2string(os.path.getsize(f))
 
 def reading (f,logger = None):
     info("Reading {s:s} from [{f:s}]".format(s=filesize2string(f),f=f),logger)
