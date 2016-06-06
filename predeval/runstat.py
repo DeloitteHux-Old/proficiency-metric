@@ -1,7 +1,7 @@
 # Running statistics
 
 # Author:: Sam Steingold (<sds@magnetic.com>)
-# Copyright:: Copyright (c) 2014 Magnetic Media Online, Inc.
+# Copyright:: Copyright (c) 2014, 2015, 2016 Magnetic Media Online, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,10 +32,10 @@ class RunStat (object):
 
     def merge (self, rs):
         if self.title != rs.title:
-            raise ValueError("RunStat.merge title mismatch:",self.title,rs.title)
+            raise ValueError("RunStat.merge: title mismatch",self.title,rs.title)
 
     def out (self):
-        raise NotImplementedError("RunStat.add")
+        raise NotImplementedError("RunStat.out")
 
 class Counter (RunStat):
     def __init__ (self, title, values = None, values_weights = None):
@@ -63,7 +63,7 @@ class Counter (RunStat):
     def merge (self, c):
         super(Counter, self).merge(c)
         if not isinstance(c, Counter):
-            raise ValueError("Counter.merge bad type",type(c))
+            raise ValueError("Counter.merge: bad type",type(c))
         for o,n in c.counts.iteritems():
             self.add(o, n)
 
@@ -80,6 +80,9 @@ class Counter (RunStat):
     def __str__ (self):
         return "%s (%s)" % (self.title,util.dict__str__(
             self.counts,util.title2missing(self.title)))
+
+    def __repr__ (self):
+        return "%s(%r)" % (self.__class__, self.__dict__)
 
     # pylint: disable=arguments-differ
     def out (self, pc = util.PrintCounter()):
@@ -162,7 +165,7 @@ class NumStat (RunStat):
             for v,w in values_weights:
                 self.add(v,w)
 
-    def add (self, v,  n = 1):
+    def add (self, v, n = 1):
         try:
             v = float(v)
         except (TypeError, ValueError):
@@ -180,12 +183,12 @@ class NumStat (RunStat):
                 self.minN += n
             elif self.minV > v:
                 self.minV = v
-                self.minN = 1
+                self.minN = n
             if self.maxV == v:
                 self.maxN += n
             elif self.maxV < v:
                 self.maxV = v
-                self.maxN = 1
+                self.maxN = n
 
     def num (self):
         return self.nanCount + self.count + (0 if self.bad is None else self.bad.num())
@@ -228,17 +231,20 @@ class NumStat (RunStat):
     def __str__ (self, toString = str):
         if toString is None:
             toString = str
-        return "{t:s} [{c:,d} {m:s}${d:s} {i:s}{I:s}:{a:s}{A:s}{n:s}{b:s}]".format(
+        return "{t:s} [{c:,.0f} {m:s}${d:s} {i:s}{I:s}:{a:s}{A:s}{n:s}{b:s}]".format(
             t=self.title,c=self.count,m=toString(self.mean()),
             d=toString(self.stdDev()),
-            i=("{i:,d}".format(i=int(self.minV)) if self.integer else
+            i=("{i:,.0f}".format(i=self.minV) if self.integer else
                toString(self.minV)),
-            I=("" if self.minN == 1 else "*{i:,d}".format(i=self.minN)),
-            a=("{i:,d}".format(i=int(self.maxV)) if self.integer else
+            I=("" if self.minN == 1 else "*{i:,.0f}".format(i=self.minN)),
+            a=("{i:,.0f}".format(i=self.maxV) if self.integer else
                toString(self.maxV)),
-            A=("" if self.maxN == 1 else "*{i:,d}".format(i=self.maxN)),
-            n=("" if self.nanCount==0 else " NaN={i:,d}".format(i=self.nanCount)),
-            b=("" if self.bad is None else " Bad={i:,d}".format(i=self.bad.num())))
+            A=("" if self.maxN == 1 else "*{i:,.0f}".format(i=self.maxN)),
+            n=("" if self.nanCount==0 else " NaN={i:,.0f}".format(i=self.nanCount)),
+            b=("" if self.bad is None else " Bad={i:,.0f}".format(i=self.bad.num())))
+
+    def __repr__ (self):
+        return "%s(%r)" % (self.__class__, self.__dict__)
 
     # pylint: disable=arguments-differ
     def out (self, pc = util.PrintCounter(), toString = str):
@@ -250,6 +256,13 @@ class NumStat (RunStat):
     def dump (self, pc, toString = str):
         self.out(pc,toString)
 
+    def as_dict (self):
+        if self.bad:
+            ret = self.__dict__.copy()
+            ret["bad"] = self.bad.counts
+            return ret
+        return self.__dict__
+
     @staticmethod
     def test ():
         c = NumStat("foo")
@@ -259,13 +272,16 @@ class NumStat (RunStat):
         print "c.num={n:,d}".format(n=c.num())
         d = NumStat("foo",values=[5,6,8,3,4,5,2,4,5,6,7,4,4,5])
         d.out()
+        print c.as_dict()
         c.merge(d)
         c.out()
+        print c.as_dict()
         for x in [100,200,10000,300000]:
             c.add(x)
         import progress
-        c.out(progress.difftime2string)
+        c.out(toString=progress.difftime2string)
         print "c.num={n:,d}".format(n=c.num())
+        print c.as_dict()
 
 def test():
     Counter.test()
